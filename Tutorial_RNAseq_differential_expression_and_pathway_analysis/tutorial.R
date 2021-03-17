@@ -93,3 +93,18 @@ plot_pathway = function(pid) pathview(gene.data=foldchanges, pathway.id=pid, spe
 # plot multiple pathways (plots saved to disk and returns a throwaway list object)
 tmp = sapply(keggresids, function(pid) pathview(gene.data=foldchanges, pathway.id=pid, species="hsa"))
 
+# ----------- make volcano plot ------------------
+cols <- densCols(res$log2FoldChange, -log10(res$pvalue))
+plot(res$log2FoldChange, -log10(res$pvalue), col=cols, panel.first=grid(), 
+     main = "Volcano Plot", xlab = "log2(fold-change)", ylab = "-log10(adjusted p-value)",
+     pch = 20, cex = 0.6)
+
+abline(v=0)
+abline(v=c(-1,1), col="brown")
+# se añade un eje en -log10(de el valor de alpha que se este manejando)
+# abline(h=-log10(alpha), col="brown")
+
+EnhancedVolcano(res, 
+                lab = rownames(res), 
+                x = 'log2FoldChange',
+                y = 'pvalue')
