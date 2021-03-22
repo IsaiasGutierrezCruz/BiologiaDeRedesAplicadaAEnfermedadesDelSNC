@@ -1,0 +1,5 @@
+red,	descripcion,	origen,	dirigida,	pesada
+conectoma_gato,	Conectoma del cerebro del gato,	https://neurodata.io/project/connectomes/,	SI,	NO
+BrCanBasal,	Coexpresion de genes en cáncer de mama basal,	https://www.frontiersin.org/articles/10.3389/fphys.2016.00568/full,	NO,	NO
+kegg_nw,	Red metabólica de la Kyoto Encyclopedia of Genes and Genomes,	https://www.genome.jp/,	SI,	Signo
+string_ReceptoresBrCan,	interaccion proteina proteina de AR;ESR1;ESR2;ERBB2 a cinco vecinos,	https://string-db.org/cgi/network.pl?taskId=tdRtEbYEx5vd,	NO,	NO
