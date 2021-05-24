@@ -1,6 +1,7 @@
 getSamplesToStudy <- function(RNAseqCounts, FullMeta){
   # get the metadata of the samples of interest
-  samples <- names(RNAseqCounts[, 3:642])
+  columns <- ncol(RNAseqCounts)
+  samples <- names(RNAseqCounts[, 3:columns])
   samples <- as.data.frame(samples)
   MetaSamples <- FullMeta[FullMeta$specimenID %in% samples$samples, ]
   
