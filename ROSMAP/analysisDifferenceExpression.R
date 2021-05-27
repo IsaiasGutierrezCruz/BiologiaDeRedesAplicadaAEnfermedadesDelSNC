@@ -1,21 +1,4 @@
-analysisDifferenceExpression <- function(RNAseqCounts, samplesToStudy){
-  # prepare countData 
-  samplesLess <- RNAseqCounts[, samplesToStudy[[1]]]
-  samplesGreater <- RNAseqCounts[, samplesToStudy[[2]]]
-  countData <- cbind(samplesLess, samplesGreater)
-  row.names(countData) <- RNAseqCounts$gene_id
-  countData <- as.matrix(countData)
-  countData <- apply(countData, 2, as.integer)
-  rownames(countData) <- RNAseqCounts$gene_id
-  
-  countData <- countData[rowSums(countData)>1, ]
-  
-  # prepare the metadata
-  condition <- as.factor(c(rep("EarlyOnset", times = 47), 
-                           rep("LateOnset", times = 174)))
-  colData <- data.frame(condition)
-  row.names(colData) <- c(samplesToStudy[[1]], samplesToStudy[[2]])
-  
+analysisDifferenceExpression <- function(countData, colData){
   # Analysis of the data 
   library(edgeR)
   Label <- c(samplesToStudy[[1]], samplesToStudy[[2]])
@@ -65,11 +48,12 @@ analysisDifferenceExpression <- function(RNAseqCounts, samplesToStudy){
   abline(v = 0.05, col = "red", lwd = 3)
   
   # plotSmear 
-  de <- decideTestsDGE(et)
+  de <- decideTestsDGE(et, p.value = 0.1)
   summary(de)
   
   detags <- rownames(y)[as.logical(de)]
   plotSmear(et, de.tags = detags, main = "plotSmear")
   abline(h=c(-1, 1), col = "blue")
   
+  top2
 }
