@@ -49,6 +49,7 @@ rownames(countData)[rowWithLength18] <- substr(rownames(countData)[rowWithLength
                                                nchar(rownames(countData)[rowWithLength18])-3)
 
 
+# change the format of the ID's 
 nombres <- data.frame(id = rownames(countData)) 
 nombres$entrez <- mapIds(org.Hs.eg.db,
                            keys=rownames(countData), 
@@ -57,12 +58,16 @@ nombres$entrez <- mapIds(org.Hs.eg.db,
                            multiVals="first")
 
 rownames(countData) <- nombres$entrez
-rownames(countData)
+
+
+# remove NA values 
+good <- complete.cases(rownames(countData))
+countData <- countData[good, ]
 
 
 data(kegg.sets.hs)
 data(sigmet.idx.hs)
-kegg.sets.hs = kegg.sets.hs[sigmet.idx.hs]
+kegg.sets.hs <- kegg.sets.hs[sigmet.idx.hs]
 
 # groups 
 earlyOnset <- which(colnames(countData)%in%samplesToStudy$LessThan70Years)
@@ -73,6 +78,10 @@ earlyOnset_v_LateOnset <- gage(exprs = countData,
                                ref = earlyOnset,
                                samp = lateOnset, 
                                compare = "unpaired")
+
+
+earlyOnset_v_LateOnset.Sig <- sigGeneSet(earlyOnset_v_LateOnset, 
+                                         outname = "earlyOnSet_v_LateOnset")
 
 
 # ---- all the data with go -----
