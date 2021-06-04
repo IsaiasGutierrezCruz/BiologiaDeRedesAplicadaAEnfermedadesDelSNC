@@ -25,6 +25,7 @@ source("analysisDifferenceExpression.R")
 top2 <- analysisDifferenceExpression(countData = countData, 
                              colData = colData)
 
+
 # -------- gage -----------
 # necesita: 
 
@@ -68,21 +69,33 @@ countData <- countData[good, ]
 data(kegg.sets.hs)
 data(sigmet.idx.hs)
 kegg.sets.hs <- kegg.sets.hs[sigmet.idx.hs]
+kegg.sets.hs <- kegg.sets.hs[1:131]
 
 # groups 
 earlyOnset <- which(colnames(countData)%in%samplesToStudy$LessThan70Years)
 lateOnset <- which(colnames(countData)%in%samplesToStudy$GreaterThan70Years)
 
-earlyOnset_v_LateOnset <- gage(exprs = countData, 
+earlyOnset_v_LateOnsetSAMEDIR <- gage(exprs = countData, 
                                gsets = kegg.sets.hs, 
                                ref = earlyOnset,
                                samp = lateOnset, 
-                               compare = "unpaired")
+                               compare = "unpaired",
+                               same.dir = TRUE)
 
+earlyOnset_v_LateOnset.SigSAMEDIR <- sigGeneSet(earlyOnset_v_LateOnsetSAMEDIR)
 
-earlyOnset_v_LateOnset.Sig <- sigGeneSet(earlyOnset_v_LateOnset, 
-                                         outname = "earlyOnSet_v_LateOnset")
+earlyOnset_v_LateOnsetBOTHDIR <- gage(exprs = countData, 
+                                      gsets = kegg.sets.hs, 
+                                      ref = earlyOnset,
+                                      samp = lateOnset, 
+                                      compare = "unpaired",
+                                      same.dir = FALSE)
 
+earlyOnset_v_LateOnset.SigBOTHDIR <- sigGeneSet(earlyOnset_v_LateOnsetBOTHDIR, 
+                                                outname = "earlyOnset_v_lateOnset")
+
+tmp = sapply(c("hsa03010", "hsa00190", "hsa04260", "hsa04971", "hsa04971"), function(pid) pathview(gene.data=countData, 
+                                                pathway.id=pid, species="hsa"))
 
 # ---- all the data with go -----
 # biological process (BP)
