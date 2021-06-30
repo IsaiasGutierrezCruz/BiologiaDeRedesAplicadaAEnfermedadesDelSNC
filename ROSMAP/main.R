@@ -16,14 +16,10 @@ source("formatData.R")
 data <- formatData(RNAseqCounts = RNAseqCounts, 
                    samplesToStudy = samplesToStudy)
 
-countData <- data$countData
-colData <- data$colData
-
-
 # data analysis with edgeR
 source("analysisDifferenceExpression.R")
-top2 <- analysisDifferenceExpression(countData = countData, 
-                             colData = colData)
+top2 <- analysisDifferenceExpression(countData = data$countData, 
+                             colData = data$colData)
 
 # data analysis with GAGE
 source("analysisGAGE.R")

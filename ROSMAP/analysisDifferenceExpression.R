@@ -6,22 +6,14 @@ analysisDifferenceExpression <- function(countData, colData){
   
   y <- DGEList(counts = countData[, 1:221], group = colData$condition)
   colnames(y) <- colData$Label
-  #dim(y)
-  #head(y)
   
   keep <- rowSums(cpm(y)>1) >= 3
   y <- y[keep, ]
-  #dim(y)
   
-  #y$samples$lib.size
   y$samples$lib.size <- colSums(y$counts)
   
   # normalizar 
   y <- calcNormFactors(y)
-  #y$samples
-  
-  # exploración de datos 
-  #plotMDS(y)
   
   # estimación de la dispesion
   y <- estimateCommonDisp(y, verbose = TRUE)
@@ -31,29 +23,25 @@ analysisDifferenceExpression <- function(countData, colData){
   
   # pruebas 
   et <- exactTest(y)
-  #et
   
-  #top <- topTags(et)
-  #top
-  #top$adjust.method
   top2 <- topTags(et, n = 18591)
-  #top2
-  
-  # histograma 
-  #table(top2$table$FDR < 0.05)
-  
-  #table(top2$table$FDR <0.05)/nrow(top2$table)
-  
-  hist(top2$table$FDR, breaks = 100, main = "Histograma de FDR")
-  abline(v = 0.05, col = "red", lwd = 3)
   
   # plotSmear 
   de <- decideTestsDGE(et, p.value = 0.1)
   summary(de)
   
   detags <- rownames(y)[as.logical(de)]
+  
+  pdf("Graficos/plotSmearAnalysis_edgeR.pdf", 
+      width = 8, height = 7, 
+      bg = "white",
+      colormodel = "cmyk",
+      paper = "A4")
+  
   plotSmear(et, de.tags = detags, main = "plotSmear")
   abline(h=c(-1, 1), col = "blue")
+  
+  dev.off()
   
   top2
 }
