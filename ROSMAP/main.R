@@ -158,7 +158,7 @@ genesOxiPho <- which(top2$table$entrez %in% rownames(genesOxiPho))
 OxiPho_logFC <- top2$table[genesOxiPho, ]
 OxiPho_scatterplot <- cbind(OxiPho_scatterplot, data.frame(logFC = OxiPho_logFC$logFC))
 rownames(OxiPho_scatterplot) <- OxiPho_logFC$name
-
+OxiPho_scatterplot <- mutate(OxiPho_scatterplot, names = OxiPho_logFC$name)
 
 # CardiacM
 # hacer el data frame
@@ -171,14 +171,77 @@ genesCardiacM <- which(top2$table$entrez %in% rownames(genesCardiacM))
 CardiacM_logFC <- top2$table[genesCardiacM, ]
 CardiacM_scatterplot <- cbind(CardiacM_scatterplot, data.frame(logFC = CardiacM_logFC$logFC))
 rownames(CardiacM_scatterplot) <- CardiacM_logFC$name
+CardiacM_scatterplot <- mutate(CardiacM_scatterplot, names = CardiacM_logFC$name)
 
 library(ggplot2)
-ggplot(OxiPho_scatterplot, aes(x = degree, y = logFC)) + geom_point() + 
-  geom_text(label = rownames(OxiPho_scatterplot),
-            nudge_x = 0.25, nudge_y = 0.25,
-            check_overlap = T)
+library(dplyr)
+library(ggrepel)
 
-ggplot(CardiacM_scatterplot, aes(x = degree, y = logFC)) + geom_point() + 
-  geom_text(label = rownames(CardiacM_scatterplot),
-            nudge_x = 0.25, nudge_y = 0.25,
-            check_overlap = T)
+F1 <- ggplot(OxiPho_scatterplot, aes(x = degree, y = logFC, color = degree)) + 
+  geom_point(size = 3) + 
+  geom_label_repel(
+    data = OxiPho_scatterplot %>% filter(names == "ATPase H+ transporting V0 subunit a1"), 
+    aes(label = names),
+    nudge_x = -20, 
+    nudge_y = -0.08,
+    color = "black", 
+    fill = "lightskyblue1", 
+    force = 600
+  ) + ggtitle("Vía de la Fosforilación Oxidativa") +labs(x = "Degree") + 
+  ggplot2::theme_minimal()
+  
+
+
+F2 <- ggplot(CardiacM_scatterplot, aes(x = degree, y = logFC, color = degree)) + 
+  geom_point(size = 4) + 
+  geom_label_repel(
+    data = CardiacM_scatterplot %>% filter(logFC > 0.5 | logFC < -0.25), 
+    aes(label = names),
+    nudge_x = 0, 
+    nudge_y = -0.08,
+    color = "black", 
+    fill = "lightskyblue1", 
+    force = 100
+  ) + ggtitle("Vía de la Contracción del Musculo Cardiaco") +labs(x = "Degree") + 
+  ggplot2::theme_minimal()
+
+
+F1 + theme(plot.title = element_text(face = "bold", hjust = 0.5))
+F2 + theme(plot.title = element_text(face = "bold", hjust = 0.5))
+
+# graficar networks
+plot(OxiPhoIgraph, vertex.label.cex = 0.75, vertex.size = degree(OxiPhoIgraph), layout = layout_nicely)
+
+plot(OxiPhoIgraph, 
+     vertex.label.cex = 0.75, 
+     edge.curved = TRUE, 
+     layout = layout_in_circle)
+
+library(tidygraph)
+library(ggraph)
+
+gt <- as_tbl_graph(OxiPhoIgraph)
+
+gt %>% 
+  ggraph(layout = 'kk') + 
+  geom_edge_link(aes(), show.legend = FALSE) + 
+  geom_node_point(aes(size = as.factor(degree)), colour = "lightskyblue1") +
+  theme_graph()
+
+
+plot(CardiacMuscleIgraph, vertex.label.cex = 0.75, vertex.size = degree(OxiPhoIgraph), layout = layout_nicely)
+
+plot(CardiacMuscleIgraph, 
+     vertex.label.cex = 0.75, 
+     edge.curved = TRUE, 
+     layout = layout_in_circle)
+
+gt <- as_tbl_graph(CardiacMuscleIgraph)
+
+gt %>% 
+  ggraph(layout = 'kk') + 
+  geom_edge_link(aes(), show.legend = FALSE) + 
+  geom_node_point(aes(filter = degree == 4 | degree == 5, size = as.factor(degree)), colour = "lightskyblue1") +
+  theme_graph()
+
+
