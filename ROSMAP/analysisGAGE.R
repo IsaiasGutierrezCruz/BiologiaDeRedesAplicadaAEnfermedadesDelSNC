@@ -4,17 +4,6 @@ analysisGAGE <- function(countData, samplesToStudy){
   library(gage)
   library(gageData)
   
-  # remove the version numbers of the gene ID's
-  rowWithLength18 <- which((nchar(rownames(countData)) == 18) == TRUE)
-  rowWithLength17 <- which((nchar(rownames(countData)) == 17) == TRUE)
-  
-  rownames(countData)[rowWithLength17] <- substr(rownames(countData)[rowWithLength17], 1, 
-                                                 nchar(rownames(countData)[rowWithLength17])-2)
-  
-  rownames(countData)[rowWithLength18] <- substr(rownames(countData)[rowWithLength18], 1, 
-                                                 nchar(rownames(countData)[rowWithLength18])-3)
-  
-  
   # change the format of the ID's 
   nombres <- data.frame(id = rownames(countData)) 
   nombres$entrez <- mapIds(org.Hs.eg.db,
@@ -57,6 +46,6 @@ analysisGAGE <- function(countData, samplesToStudy){
                                         same.dir = FALSE)
   
   earlyOnset_v_LateOnset.SigBOTHDIR <- sigGeneSet(earlyOnset_v_LateOnsetBOTHDIR, 
-                                                  outname = "earlyOnset_v_lateOnset")
+                                                  outname = "Plots/earlyOnset_v_lateOnsetGAGE")
   earlyOnset_v_LateOnset.SigBOTHDIR
 }

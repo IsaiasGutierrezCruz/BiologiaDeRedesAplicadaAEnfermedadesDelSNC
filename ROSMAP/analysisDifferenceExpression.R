@@ -32,7 +32,7 @@ analysisDifferenceExpression <- function(countData, colData){
   
   detags <- rownames(y)[as.logical(de)]
   
-  pdf("Graficos/plotSmearAnalysis_edgeR.pdf", 
+  pdf("Plots/plotSmearAnalysis_edgeR.pdf", 
       width = 8, height = 7, 
       bg = "white",
       colormodel = "cmyk",
