@@ -10,7 +10,7 @@ El impacto de la enfermedad de Alzheimer (EA) ha ido en aumento en las últimas 
 - Análisis de expresión diferencial de genes, vías y redes
 
 ## Metodología 
-![Metodologia]("Metodologia.png")
+![Metodologia]("https://github.com/IsaiasGutierrezCruz/BiologiaDeRedesAplicadaAEnfermedadesDelSNC/blob/main/Metodologia.pngMetodologia.png")
 
 ## Conclusiones 
 Se logró llevar a cabo el análisis de expresión diferencial y vías a los datos provenientes del proyecto ROSMAP, caracterizando perturbaciones significativas en la expresión de genes de los individuos con LOAD, los cuales están relacionados con las vías de señalización implicadas en enfermedades cardiovasculares y en procesos fundamentales para el ciclo de vida de las neuronas.
