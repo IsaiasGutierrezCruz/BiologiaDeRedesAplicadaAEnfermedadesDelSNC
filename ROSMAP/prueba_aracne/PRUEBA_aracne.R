@@ -2,65 +2,32 @@ library(minet)
 library(Rgraphviz)
 
 # early Onset 
-data$countData[, 1:47]
-write.table(data$countData[, 1:47], file = "earlyOnset_counts.txt", sep = "\t", 
-            row.names = TRUE, col.names = TRUE)
+y$counts[, 1:47]
 
+saveRDS(y$counts[, 1:47], file = "earlyOnset_counts.rds")
 
-write.csv(mim, file = "mutual_information_earlyOnset.csv", row.names = TRUE, col.names = TRUE)
-write.table(mim, file = "m.txt", sep = "\t", 
-            row.names = TRUE, col.names = TRUE)
+saveRDS(mim, file = "mutual_information_earlyOnset.rds")
+readRDS(file = "mutual_information_earlyOnset.rds")
 
-
-earlyOnset <- as.data.frame(t(data$countData[, 1:47]))
+earlyOnset <- as.data.frame(t(y$counts[, 1:47]))
 
 mim <- build.mim(dataset = earlyOnset, estimator = "spearman")
-red_aracne <- aracne(mim = mim, eps = 0)
-
-plot( as(red_aracne,"graphNEL") )
-
-
-#late onset 
-data$countData[, 48:221]
-write.table(data$countData[, 48:221], file = "lateOnset_counts.txt", sep = "\t", 
-            row.names = TRUE, col.names = TRUE)
-
-mim <- build.mim(dataset = data$countData[, 48:221], estimator = "spearman")
-
-red_aracne <- aracne(mim = mim, eps = 0)
-
-plot( as(red_aracne,"graphNEL") )
-
-
-prueba <- matrix(rnorm(10000), nrow = 100)
-mi_quantil <- quantile(prueba, 0.9)
-mi_quantil
-prueba2 <- ifelse(prueba >= mi_quantil, 1, 0)
-prueba[1:10, 1:10]
-prueba2[1:10, 1:10]
-
-
-# ----- normalized ------------
-
-# early Onset 
-y$counts[, 1:47]
-write.table(y$counts[, 1:47], file = "earlyOnsetNormalized_counts.txt", sep = "\t", 
-            row.names = TRUE, col.names = TRUE)
-
-mim <- build.mim(dataset = y$counts[, 1:47], estimator = "spearman")
-red_aracne <- aracne(mim = mim, eps = 0)
+relnet_earlyOnset <- clr(mim = mim, skipDiagonal = 1)
 
 plot( as(red_aracne,"graphNEL") )
 
 
 #late onset 
 y$counts[, 48:221]
-write.table(y$counts[, 48:221], file = "lateOnsetNormalized_counts.txt", sep = "\t", 
-            row.names = TRUE, col.names = TRUE)
 
-mim <- build.mim(dataset = y$counts[, 48:221], estimator = "spearman")
+saveRDS(y$counts[, 48:221], file = "lateOnset_counts.rds")
 
-red_aracne <- aracne(mim = mim, eps = 0)
+saveRDS(mim, file = "mutual_information_lateOnset.rds")
+readRDS(file = "mutual_information_lateOnset.rds")
+
+lateOnset <- as.data.frame(t(y$counts[, 48:221]))
+
+mim_lateOnset <- build.mim(dataset = lateOnset, estimator = "spearman")
+relnet_lateOnset <- clr(mim = mim_lateOnset, skipDiagonal = 1)
 
 plot( as(red_aracne,"graphNEL") )
-

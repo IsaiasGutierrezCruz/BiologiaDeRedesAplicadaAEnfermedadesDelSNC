@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 ROSMAP/Data
+.rds
+ROSMAP/prueba_aracne/Data
