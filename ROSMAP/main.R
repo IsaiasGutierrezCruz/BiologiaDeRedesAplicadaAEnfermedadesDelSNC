@@ -23,7 +23,7 @@ main <- function(directory = "~/"){
   # data analysis with edgeR
   source("analysisDifferenceExpression.R")
   top2 <- analysisDifferenceExpression(countData = data$countData, 
-                               colData = data$colData)
+                               colData = data$colData, samplesToStudy = samplesToStudy)
   
   # data analysis with GAGE
   source("analysisGAGE.R")

@@ -1,4 +1,4 @@
-analysisDifferenceExpression <- function(countData, colData){
+analysisDifferenceExpression <- function(countData, colData, samplesToStudy){
   # Analysis of the data 
   library(edgeR)
   Label <- c(samplesToStudy[[1]], samplesToStudy[[2]])
