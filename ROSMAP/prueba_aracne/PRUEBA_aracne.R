@@ -7,7 +7,7 @@ y$counts[, 1:47]
 saveRDS(y$counts[, 1:47], file = "earlyOnset_counts.rds")
 
 saveRDS(mim, file = "mutual_information_earlyOnset.rds")
-readRDS(file = "mutual_information_earlyOnset.rds")
+mim <- readRDS(file = "E:/DataROSMAPNetwork/Data/mutual_information_earlyOnset.rds")
 
 earlyOnset <- as.data.frame(t(y$counts[, 1:47]))
 
