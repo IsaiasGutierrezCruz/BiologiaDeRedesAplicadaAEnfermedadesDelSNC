@@ -1,0 +1,134 @@
+---
+title: "Resumen de las propiedades de las redes"
+author: "Abel Isaias Gutierrez-Cruz"
+date: "5/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(ggplot2)
+library(dplyr)
+prop_graphs <- readRDS(file = "E:/DataROSMAPNetwork/Data/prop_graphs.rds")
+```
+
+
+## Propiedades generales
+### Membership 
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$components$membership)
+
+# Inicio tardio 
+summary(prop_graphs[[2]]$components$membership)
+
+ggplot(data = data.frame(IDCluster = c(prop_graphs[[1]]$components$membership, 
+                                       prop_graphs[[2]]$components$membership), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+       mapping = aes(x= IDCluster, fill = type)) + geom_density(alpha = 0.4)
+
+#plot(density(prop_graphs[[1]]$components$membership), xlab = "ID del cluster")
+#lines(density(prop_graphs[[2]]$components$membership))
+```
+
+### Número de Clusters
+
+```{r}
+kable(data.frame(earlyOnset = prop_graphs[[1]]$components$no, 
+                 lateOnset = prop_graphs[[2]]$components$no))
+```
+
+
+
+### Tamaño de los clusters 
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$components$csize)
+# Inicio tardio 
+summary(prop_graphs[[2]]$components$csize)
+
+par(mfrow = c(2,1), mar = c(4, 3, 1, 1))
+barplot(table(prop_graphs[[1]]$components$csize), xlab = "Tamaños de los clusters", 
+        main = "Inico temprano")
+barplot(table(prop_graphs[[2]]$components$csize), xlab = "Tamaños de los clusters", 
+        main = "Inicio tardio")
+```
+
+### Rutas más cortas entre nodos 
+```{r}
+kable(data.frame(earlyOnset = prop_graphs[[1]]$average.path.length, 
+                 lateOnset = prop_graphs[[2]]$average.path.length))
+```
+
+### Transitividad 
+```{r}
+kable(data.frame(earlyOnset = prop_graphs[[1]]$transitivity, 
+                 lateOnset = prop_graphs[[2]]$transitivity))
+```
+
+### Diametro 
+```{r}
+kable(data.frame(earlyOnset = prop_graphs[[1]]$diameter, 
+                 lateOnset = prop_graphs[[2]]$diameter))
+
+```
+
+## Propiedades de los nodos
+
+### Degree 
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$nodes$degree)
+
+# Inicio tardio 
+summary(prop_graphs[[2]]$nodes$degree)
+
+
+ggplot(data = data.frame(Degree = c(prop_graphs[[1]]$nodes$degree, 
+                                       prop_graphs[[2]]$nodes$degree), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+       mapping = aes(x= Degree, fill = type)) + geom_density(alpha = 0.4)
+```
+
+### Betweeneess
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$nodes$betweenness)
+# Inicio tardio 
+summary(prop_graphs[[2]]$nodes$betweenness)
+```
+
+### Transitividad 
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$nodes$transitivity)
+# Inicio tardio 
+summary(prop_graphs[[2]]$nodes$transitivity)
+
+
+ggplot(data = data.frame(transitivity = c(prop_graphs[[1]]$nodes$transitivity, 
+                                       prop_graphs[[2]]$nodes$transitivity), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+       mapping = aes(x= type,  y = transitivity, fill = type)) + 
+  scale_y_continuous(name = "Transitividad") + 
+  stat_boxplot(geom = "errorbar", width = 0.2) + geom_boxplot()
+
+```
+
+### Clustering Louvain 
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$nodes$comm.louvain)
+# Inicio tardio 
+summary(prop_graphs[[2]]$nodes$comm.louvain)
+
+
+ggplot(data = data.frame(communities = c(prop_graphs[[1]]$nodes$comm.louvain, 
+                                       prop_graphs[[2]]$nodes$comm.louvain), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+       mapping = aes(x= communities, fill = type)) + geom_density(alpha = 0.4)
+```
+
