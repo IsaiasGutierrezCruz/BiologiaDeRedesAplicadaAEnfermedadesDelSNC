@@ -18,7 +18,7 @@ prop_graphs <- readRDS(file = "E:/DataROSMAPNetwork/Data/prop_graphs.rds")
 
 ## Propiedades generales
 ### Membership 
-```{r}
+```{r fig.width=8}
 # Inicio temprano 
 summary(prop_graphs[[1]]$components$membership)
 
@@ -44,7 +44,7 @@ kable(data.frame(earlyOnset = prop_graphs[[1]]$components$no,
 
 
 ### Tamaño de los clusters 
-```{r}
+```{r fig.width=8}
 # Inicio temprano 
 summary(prop_graphs[[1]]$components$csize)
 # Inicio tardio 
@@ -102,7 +102,7 @@ summary(prop_graphs[[2]]$nodes$betweenness)
 ```
 
 ### Transitividad 
-```{r}
+```{r fig.width=8}
 # Inicio temprano 
 summary(prop_graphs[[1]]$nodes$transitivity)
 # Inicio tardio 
@@ -132,3 +132,40 @@ ggplot(data = data.frame(communities = c(prop_graphs[[1]]$nodes$comm.louvain,
        mapping = aes(x= communities, fill = type)) + geom_density(alpha = 0.4)
 ```
 
+## Propiedades de los edges 
+
+```{r}
+# Inicio temprano 
+summary(prop_graphs[[1]]$edges$betweenness)
+# Inicio tardio 
+summary(prop_graphs[[2]]$edges$betweenness)
+```
+
+## Exploración de algunos genes 
+
+Valores membership de los genes pertenecientes a clusters con el mayor tamaño
+```{r}
+prop_graphs$earlyOnset$components$membership[prop_graphs$earlyOnset$components$csize  == 11738]
+```
+
+Valores membership de genes pertenencientes a clusters de un tamaño mayor a 50 
+```{r}
+prop_graphs$earlyOnset$components$membership[prop_graphs$earlyOnset$components$csize  > 50 ]
+```
+
+Gen con el mayor degree 
+```{r}
+prop_graphs$earlyOnset$nodes[c(1, 2)] %>% filter(degree ==2435)
+```
+
+Genes con niveles altos de degree 
+```{r}
+prop_graphs$earlyOnset$nodes[c(1, 2)] %>% filter(degree >= 2300)
+```
+
+## Redes 
+
+### Early Onset 
+![Red Inicio Temprano Alzheimer](earlyOnset.png)
+
+![Red Inicio Tardio Alzheimer](lateOnset.png)

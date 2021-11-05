@@ -155,5 +155,7 @@ ggsave(filename = "Network_earlyOnset.png", plot = plot, units = c("cm"),
 
 
 
-# ---- explore the properties -----
-prop_graphs[[1]]$components
+# ---- get the formats gml  ----
+write_graph(mimgraph, file = "E:/DataROSMAPNetwork/Data/pruebas_graphs/earlyOnset_graph.gml", format = "gml")
+
+write_graph(mimgraph_lo, file = "E:/DataROSMAPNetwork/Data/pruebas_graphs/lateOnset_graph.gml", format = "gml")

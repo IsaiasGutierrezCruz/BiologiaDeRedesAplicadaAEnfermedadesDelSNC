@@ -33,6 +33,7 @@ analysisGraphs <- function(pathways_names, objects_names, species_name, database
     E(graphIgraph)$intermediacion <- edge.betweenness(graphIgraph)
     prop_graphs[[i]] <- append(prop_graphs[[i]], list(edges = get.data.frame(x = graphIgraph, what = "edges")))
     
+    
     # ---- PLOTS ----
     gt <- as_tbl_graph(graphIgraph)
     
