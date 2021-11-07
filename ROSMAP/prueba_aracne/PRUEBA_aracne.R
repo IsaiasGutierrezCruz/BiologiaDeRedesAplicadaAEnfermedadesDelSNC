@@ -1,12 +1,28 @@
 library(minet)
 library(Rgraphviz)
 library(igraph)
+library("AnnotationDbi")
+library("org.Hs.eg.db")
 
 # early Onset 
 y$counts[, 1:47]
 
 saveRDS(y$counts[, 1:47], file = "earlyOnset_counts.rds")
 earlyOnset <- readRDS(file = "E:/DataROSMAPNetwork/Data/earlyOnset_counts.rds")
+
+
+nombresEarlyOnset <- mapIds(org.Hs.eg.db, 
+                            keys = row.names(earlyOnset),
+                            column = "SYMBOL",
+                            keytype = "ENSEMBL",
+                            multiVals = "first")
+nombresEarlyOnset <- as.vector(nombresEarlyOnset)
+
+row.names(earlyOnset) <- nombresEarlyOnset
+
+good <- complete.cases(row.names(earlyOnset))
+earlyOnset <- earlyOnset[good, ]
+
 
 saveRDS(mim, file = "mutual_information_earlyOnset.rds")
 mim <- readRDS(file = "E:/DataROSMAPNetwork/Data/mutual_information_earlyOnset.rds")
