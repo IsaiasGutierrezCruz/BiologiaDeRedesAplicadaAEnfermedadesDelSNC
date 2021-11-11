@@ -397,3 +397,25 @@ paraCheck <- function(name, para) {
       stop("'doGSOA' and 'doGSEA' should be a single logical value!\n ")
   }
 }
+
+hyperGeoTest <- function(geneSet, universe, hits) {
+  ##number of genes in universe
+  N <- length(universe) 			
+  ##remove genes from gene set that are not in universe			
+  geneSet <- intersect(geneSet[[1]], universe) 
+  ##size of gene set	
+  m <- length(geneSet) 							
+  Nm <- N-m	
+  ##hits in gene set
+  overlap <- intersect(geneSet, hits) 	
+  ##number of hits in gene set		
+  k <- length(overlap) 							
+  n <- length(hits)	
+  HGTresults <- phyper(k-1, m, Nm, n, lower.tail = F)
+  ex <- (n/N)*m
+  if(m == 0) HGTresults <- NA
+  hyp.vec <- c(N, m, n, ex, k, HGTresults)
+  names(hyp.vec) <- c("Universe Size", "Gene Set Size", "Total Hits", 
+                      "Expected Hits", "Observed Hits", "Pvalue")
+  return(hyp.vec)
+}

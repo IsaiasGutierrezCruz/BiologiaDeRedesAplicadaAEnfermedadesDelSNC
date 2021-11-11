@@ -10,7 +10,7 @@ y$counts[, 1:47]
 saveRDS(y$counts[, 1:47], file = "earlyOnset_counts.rds")
 earlyOnset <- readRDS(file = "E:/DataROSMAPNetwork/Data/earlyOnset_counts.rds")
 
-
+# add key symbol
 nombresEarlyOnset <- mapIds(org.Hs.eg.db, 
                             keys = row.names(earlyOnset),
                             column = "SYMBOL",
@@ -23,21 +23,26 @@ row.names(earlyOnset) <- nombresEarlyOnset
 good <- complete.cases(row.names(earlyOnset))
 earlyOnset <- earlyOnset[good, ]
 
+earlyOnset <- earlyOnset[unique(row.names(earlyOnset)), ]
 
-saveRDS(mim, file = "mutual_information_earlyOnset.rds")
-mim <- readRDS(file = "E:/DataROSMAPNetwork/Data/mutual_information_earlyOnset.rds")
 
 earlyOnset <- as.data.frame(t(earlyOnset))
 
 mim <- build.mim(dataset = earlyOnset, estimator = "spearman")
+
+
+saveRDS(mim, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/mutual_information_earlyOnset.rds")
+mim <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/mutual_information_earlyOnset.rds")
+
+# relevant network 
 
 umbral <- quantile(mim, 0.99, na.rm = TRUE)
 mim2 <- ifelse(mim < umbral, 0, 1)
 mim2[is.na(mim2)] <- 0
 mimgraph <- graph_from_adjacency_matrix(mim2, mode = "undirected")
 
-saveRDS(mimgraph, file = "E:/DataROSMAPNetwork/Data/network_earlyOnset.rds")
-mimgraph <- readRDS(file = "E:/DataROSMAPNetwork/Data/network_earlyOnset.rds")
+saveRDS(mimgraph, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_earlyOnset.rds")
+mimgraph <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_earlyOnset.rds")
 
 plot(mimgraph, vertex.label.cex = 0.5, layout = layout_nicely)
 
@@ -49,20 +54,38 @@ y$counts[, 48:221]
 saveRDS(y$counts[, 48:221], file = "lateOnset_counts.rds")
 lateOnset <- readRDS(file = "E:/DataROSMAPNetwork/Data/lateOnset_counts.rds")
 
-saveRDS(mimLO, file = "E:/DataROSMAPNetwork/Data/mutual_information_lateOnset.rds")
-mimLO <- readRDS(file = "E:/DataROSMAPNetwork/Data/mutual_information_lateOnset.rds")
+# add key symbol
+nombresLateOnset <- mapIds(org.Hs.eg.db, 
+                            keys = row.names(lateOnset),
+                            column = "SYMBOL",
+                            keytype = "ENSEMBL",
+                            multiVals = "first")
+nombresLateOnset <- as.vector(nombresLateOnset)
+
+row.names(lateOnset) <- nombresLateOnset
+
+good <- complete.cases(row.names(lateOnset))
+lateOnset <- lateOnset[good, ]
+
+lateOnset <- lateOnset[unique(row.names(lateOnset)), ]
+
+
 
 lateOnset <- as.data.frame(t(lateOnset))
 
 mimLO <- build.mim(dataset = lateOnset, estimator = "spearman")
 
+saveRDS(mimLO, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/mutual_information_lateOnset.rds")
+mimLO <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/mutual_information_lateOnset.rds")
+
+# relevance network
 umbral_lo <- quantile(mimLO, 0.99, na.rm = TRUE)
 mimLO2 <- ifelse(mimLO < umbral_lo, 0, 1)
 mimLO2[is.na(mimLO2)] <- 0
 mimgraph_lo <- graph_from_adjacency_matrix(mimLO2, mode = "undirected")
 
-saveRDS(mimgraph_lo, file = "E:/DataROSMAPNetwork/Data/network_lateOnset.rds")
-mimgraph_lo <- readRDS(file = "E:/DataROSMAPNetwork/Data/network_lateOnset.rds")
+saveRDS(mimgraph_lo, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_lateOnset.rds")
+mimgraph_lo <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_lateOnset.rds")
 
 plot(mimgraph_lo, vertex.label.cex = 0.5, layout = layout_nicely)
 
@@ -137,15 +160,15 @@ E(mimgraph_lo)$betweenness <- edge.betweenness(mimgraph_lo)
 prop_graphs[["lateOnset"]] <- append(prop_graphs[["lateOnset"]], list(edges = get.data.frame(x = mimgraph_lo, what = "edges")))
 
 
-saveRDS(prop_graphs, file = "E:/DataROSMAPNetwork/Data/prop_graphs.rds")
-prop_graphs <- readRDS(file = "E:/DataROSMAPNetwork/Data/prop_graphs.rds")
+saveRDS(prop_graphs, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/prop_graphs.rds")
+prop_graphs <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/prop_graphs.rds")
 
 # ---- keep the graphs with info
 
-saveRDS(mimgraph, file = "E:/DataROSMAPNetwork/Data/network_earlyOnset_with_info.rds")
-mimgraph <- readRDS(file = "E:/DataROSMAPNetwork/Data/network_earlyOnset_with_info.rds")
-saveRDS(mimgraph_lo, file = "E:/DataROSMAPNetwork/Data/network_lateOnset_with_info.rds")
-mimgraph_lo <- readRDS(file = "E:/DataROSMAPNetwork/Data/network_lateOnset_with_info.rds")
+saveRDS(mimgraph, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_earlyOnset_with_info.rds")
+mimgraph <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_earlyOnset_with_info.rds")
+saveRDS(mimgraph_lo, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_lateOnset_with_info.rds")
+mimgraph_lo <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/network_lateOnset_with_info.rds")
 
 
 # ---- plot ----

@@ -12,11 +12,11 @@ source("MapFlow_2.R")
 flow_cases = mapflow(g_cases, modules_cases)
 
 #export 
-write.graph(flow_cases, "results/flow_cases.gml", "gml")
+write.graph(flow_cases, "resultsWithOnlySymbl/flow_cases.gml", "gml")
 
 #cntrl
 #Make projection to the community space
 flow_cntrl = mapflow(g_cntrl, modules_cntrl)
 
 #export 
-write.graph(flow_cntrl, "results/flow_cntrl.gml", "gml")
+write.graph(flow_cntrl, "resultsWithOnlySymbl/flow_cntrl.gml", "gml")

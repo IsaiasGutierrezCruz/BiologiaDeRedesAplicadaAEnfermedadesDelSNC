@@ -3,6 +3,7 @@
 #cases
 #get matrices from graphs
 xxx_cases = as.matrix(get.adjacency(flow_cases))
+xxx_cases <- xxx_cases[c("1", "2", "24", "71", "211"),c("1", "2", "24", "71", "211")]
 xxx_cases[1:10,1:10]
 yyy_cases = as.matrix(get.adjacency(bp_cases))
 yyy_cases[1:10,1:10]

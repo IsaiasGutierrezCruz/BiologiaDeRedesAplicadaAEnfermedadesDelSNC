@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(ggplot2)
 library(dplyr)
-prop_graphs <- readRDS(file = "E:/DataROSMAPNetwork/Data/prop_graphs.rds")
+prop_graphs <- readRDS(file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/prop_graphs.rds")
 ```
 
 
@@ -27,7 +27,7 @@ summary(prop_graphs[[2]]$components$membership)
 
 ggplot(data = data.frame(IDCluster = c(prop_graphs[[1]]$components$membership, 
                                        prop_graphs[[2]]$components$membership), 
-                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 16319)), 
        mapping = aes(x= IDCluster, fill = type)) + geom_density(alpha = 0.4)
 
 #plot(density(prop_graphs[[1]]$components$membership), xlab = "ID del cluster")
@@ -89,7 +89,7 @@ summary(prop_graphs[[2]]$nodes$degree)
 
 ggplot(data = data.frame(Degree = c(prop_graphs[[1]]$nodes$degree, 
                                        prop_graphs[[2]]$nodes$degree), 
-                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 16319)), 
        mapping = aes(x= Degree, fill = type)) + geom_density(alpha = 0.4)
 ```
 
@@ -111,7 +111,7 @@ summary(prop_graphs[[2]]$nodes$transitivity)
 
 ggplot(data = data.frame(transitivity = c(prop_graphs[[1]]$nodes$transitivity, 
                                        prop_graphs[[2]]$nodes$transitivity), 
-                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 16319)), 
        mapping = aes(x= type,  y = transitivity, fill = type)) + 
   scale_y_continuous(name = "Transitividad") + 
   stat_boxplot(geom = "errorbar", width = 0.2) + geom_boxplot()
@@ -128,7 +128,7 @@ summary(prop_graphs[[2]]$nodes$comm.louvain)
 
 ggplot(data = data.frame(communities = c(prop_graphs[[1]]$nodes$comm.louvain, 
                                        prop_graphs[[2]]$nodes$comm.louvain), 
-                         type = rep(c("earlyOnset", "lateOnset"), each = 19542)), 
+                         type = rep(c("earlyOnset", "lateOnset"), each = 16319)), 
        mapping = aes(x= communities, fill = type)) + geom_density(alpha = 0.4)
 ```
 
@@ -162,6 +162,7 @@ Genes con niveles altos de degree
 ```{r}
 prop_graphs$earlyOnset$nodes[c(1, 2)] %>% filter(degree >= 2300)
 ```
+
 
 ## Redes 
 

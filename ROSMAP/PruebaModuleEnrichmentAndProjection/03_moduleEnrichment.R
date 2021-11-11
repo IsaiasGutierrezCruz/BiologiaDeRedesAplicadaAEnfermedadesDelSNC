@@ -21,9 +21,9 @@ l_comm_cases = communities(modules_cases)
 
 #Enrich
 
-enrichment_list_cases = parallel::mclapply(X = seq_along(l_comm_cases), mc.cores = 1, FUN = function(i){
-#enrichment_list_cases = lapply(X = seq_along(l_comm_cases), FUN = function(i){
-  
+#enrichment_list_cases = parallel::mclapply(X = seq_along(l_comm_cases), mc.cores = 1, FUN = function(i){
+enrichment_list_cases = lapply(X = seq_along(l_comm_cases), FUN = function(i){
+  print(i)
   nomen = names(l_comm_cases)[i]
   
   my_enrichment = multiHyperGeoTest(collectionOfGeneSets = LIST_GO, 
@@ -47,7 +47,7 @@ enrichment_df_cases = ldply(enrichment_list_cases, data.frame)
 enrichment_df_cases$Adjusted.Pvalue2 = p.adjust(enrichment_df_cases$Pvalue, method = "BH")
 
 write.table(x = enrichment_df_cases, 
-            file = "results/enrichment_df_cases.txt", 
+            file = "resultsWithOnlySymbl/enrichment_df_cases.txt", 
             row.names = FALSE, 
             col.names = TRUE, 
             sep = "\t", 
@@ -58,10 +58,11 @@ write.table(x = enrichment_df_cases,
 
 
 #bipartite graph
+enrichment_df_cases <- enrichment_df_cases %>% mutate(globalPvalue = p.adjust(Adjusted.Pvalue)) %>% filter(globalPvalue < 0.05)
+
+saveRDS(enrichment_df_cases, file="resultsWithOnlySymbl/enrichment_df_cases_filtered.RDS")
+
 b_cases = graph_from_data_frame(enrichment_df_cases, directed = FALSE)
-b_cases = delete.edges(graph = b_cases, 
-                       edges = E(b_cases)[Adjusted.Pvalue2>pvalue_threshold]
-                       )
 
 V(b_cases)$type = TRUE
 V(b_cases)$type[grep(pattern = "GO_", x = V(b_cases)$name)] = FALSE
@@ -72,7 +73,7 @@ V(b_cases)$enrich = degree(b_cases)
 V(b_cases)$enrich = ifelse(V(b_cases)$enrich==0, "NO", "YES")
 
 #write out bipartite
-write.graph(b_cases, file = "results/bipartite_cases.gml", "gml")
+write.graph(b_cases, file = "resultsWithOnlySymbl/bipartite_cases.gml", "gml")
 
 #remove big enrichment list from memory
 rm(enrichment_df_cases)
@@ -84,7 +85,7 @@ rm(enrichment_df_cases)
 #projection
 bp_cases = bipartite_projection(graph = b_cases, which = TRUE)
 
-write.graph(graph = bp_cases, file = "results/bp_cases.gml", "gml")
+write.graph(graph = bp_cases, file = "resultsWithOnlySymbl/bp_cases.gml", "gml")
 
 #cntrl
 #get list of communities 
@@ -99,7 +100,7 @@ l_comm_cntrl = communities(modules_cntrl)
 
 enrichment_list_cntrl = parallel::mclapply(X = seq_along(l_comm_cntrl), mc.cores = 1, FUN = function(i){
   #enrichment_list_cntrl = lapply(X = seq_along(l_comm_cntrl), FUN = function(i){
-  
+  print(i)
   nomen = names(l_comm_cntrl)[i]
   
   my_enrichment = multiHyperGeoTest(collectionOfGeneSets = LIST_GO, 
@@ -123,7 +124,7 @@ enrichment_df_cntrl = ldply(enrichment_list_cntrl, data.frame)
 enrichment_df_cntrl$Adjusted.Pvalue2 = p.adjust(enrichment_df_cntrl$Pvalue, method = "BH")
 
 write.table(x = enrichment_df_cntrl, 
-            file = "results/enrichment_df_cntrl.txt", 
+            file = "resultsWithOnlySymbl/enrichment_df_cntrl.txt", 
             row.names = FALSE, 
             col.names = TRUE, 
             sep = "\t", 
@@ -132,11 +133,13 @@ write.table(x = enrichment_df_cntrl,
 #which(enrichment_df_cntrl$Adjusted.Pvalue2<0.05)
 
 
-#bipartite graph
+#bipartite grap
+
+enrichment_df_cntrl <- enrichment_df_cntrl %>% mutate(globalPvalue = p.adjust(Adjusted.Pvalue)) %>% filter(globalPvalue < 0.05)
+
+
 b_cntrl = graph_from_data_frame(enrichment_df_cntrl, directed = FALSE)
-b_cntrl = delete.edges(graph = b_cntrl, 
-                       edges = E(b_cntrl)[Adjusted.Pvalue2>pvalue_threshold]
-)
+
 
 V(b_cntrl)$type = TRUE
 V(b_cntrl)$type[grep(pattern = "GO_", x = V(b_cntrl)$name)] = FALSE
@@ -147,7 +150,7 @@ V(b_cntrl)$enrich = degree(b_cntrl)
 V(b_cntrl)$enrich = ifelse(V(b_cntrl)$enrich==0, "NO", "YES")
 
 #write out bipartite
-write.graph(b_cntrl, file = "results/bipartite_cntrl.gml", "gml")
+write.graph(b_cntrl, file = "resultsWithOnlySymbl/bipartite_cntrl.gml", "gml")
 
 #remove big enrichment list from memory
 rm(enrichment_df_cntrl)
@@ -158,5 +161,5 @@ rm(enrichment_df_cntrl)
 #projection
 bp_cntrl = bipartite_projection(graph = b_cntrl, which = TRUE)
 
-write.graph(graph = bp_cntrl, file = "results/bp_cntrl.gml", "gml")
+write.graph(graph = bp_cntrl, file = "resultsWithOnlySymbl/bp_cntrl.gml", "gml")
 
