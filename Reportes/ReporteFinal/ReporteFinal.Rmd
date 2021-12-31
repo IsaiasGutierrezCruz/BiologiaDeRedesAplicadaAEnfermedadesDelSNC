@@ -65,10 +65,17 @@ plot_degree <- data.frame(num_nodes = c(prueba$Freq, prueba2$Freq), Degree = c(a
     
 #    type = rep(c("earlyOnset", "lateOnset"), each = 16319))
     
-ggplot(data = plot_degree, mapping = aes(x= Degree, y = num_nodes, col = type)) + 
+p1 <- ggplot(data = plot_degree, mapping = aes(x= Degree, y = num_nodes, col = type)) + 
         geom_point(alpha = 0.3, size = 2) + scale_x_log10() + scale_y_log10() + 
         ggthemes::scale_color_ptol() + ylab("Number of nodes") + 
-        ggpubr::theme_pubclean() + theme(legend.title = element_blank())
+        ggpubr::theme_pubclean() + theme(legend.title = element_blank()) #+ geom_smooth()
+
+ggsave(filename = "Plots/Degree_graph_relevance.png", plot = p1, units = c("cm"),
+     width = 30, height = 20, dpi = 200, limitsize = FALSE)
+
+
+ggsave(filename = "Plots/Degree_graph_relevance_prueba.png", plot = p1, units = c("cm"),
+     width = 15, height = 10, dpi = 200, limitsize = FALSE)
 ```
 ```{r}
 # association 
@@ -83,10 +90,17 @@ assocstats(xtabs(~prop_graphs_relevance_networks[[1]]$nodes$degree+prop_graphs_r
 ```{r echo=FALSE}
 table_graph1 <- read.table("D:/OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO/Productividad/ProyectosProgramacion/BiologiaDeRedesAplicadaAEnfermedadesDelSNC/ROSMAP/PruebaModuleEnrichmentAndProjection/resultsWithOnlySymbl/dict_commInfomap_cntrl.txt", header = TRUE, sep = "\t")
 
+# prueba filtrando datos de degree = 0
+#dataHistModules1 <- table(filteredModules1$infomap)
+#dataModules1 <- as.data.frame(dataHistModules1)
+#dataHistModules2 <- table(filteredModules2$infomap)
+#dataModules2 <- as.data.frame(dataHistModules2)
+
 dataHistModules1 <- table(table_graph1$infomap)
 dataModules1 <- as.data.frame(dataHistModules1)
 
-ggplot(data = dataModules1, mapping = aes(x=as.numeric(Var1), y=Freq)) + geom_point() + scale_x_log10() + scale_y_log10()
+
+ggplot(data = dataModules1, mapping = aes(x=as.numeric(Var1), y=Freq)) + geom_point()  + scale_y_log10() #+ scale_x_log10()
 
 table_graph2 <- read.table("D:/OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO/Productividad/ProyectosProgramacion/BiologiaDeRedesAplicadaAEnfermedadesDelSNC/ROSMAP/PruebaModuleEnrichmentAndProjection/resultsWithOnlySymbl/dict_commInfomap_cases.txt", header = TRUE, sep = "\t")
 
@@ -94,7 +108,7 @@ table_graph2 <- read.table("D:/OneDrive - UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉX
 dataHistModules2 <- table(table_graph2$infomap)
 dataModules2 <- as.data.frame(dataHistModules2)
 
-ggplot(data = dataModules2, mapping = aes(x=as.numeric(Var1), y=Freq)) + geom_point() + scale_x_log10() + scale_y_log10()
+ggplot(data = dataModules2, mapping = aes(x=as.numeric(Var1), y=Freq)) + geom_point() + scale_y_log10() #+ scale_x_log10()
 ```
 
 ```{r echo=FALSE}
@@ -102,13 +116,32 @@ ggplot(data = dataModules2, mapping = aes(x=as.numeric(Var1), y=Freq)) + geom_po
 plot_modules <- data.frame(size_module = c(dataModules1$Freq, dataModules2$Freq), rank_module = c(as.numeric(dataModules1$Var1),
     as.numeric(dataModules2$Var1)), type = c(rep("Early Onset", each = nrow(dataModules1)), rep("Late Onset", each = nrow(dataModules2))))
 
-ggplot(data = plot_modules, mapping = aes(x= rank_module, y = size_module, col = type)) + 
-        geom_point(alpha = 0.3, size = 2)  + scale_y_log10() + 
-        ggthemes::scale_color_ptol() + ylab("Module size") + 
-        ggpubr::theme_pubclean() + theme(legend.title = element_blank())
+p2 <- ggplot(data = plot_modules, mapping = aes(x= rank_module, y = size_module, col = type)) + 
+        geom_point(alpha = 0.3, size = 2)  + scale_y_log10() +
+        ggthemes::scale_color_ptol() + ylab("Module size") + xlab("Rank module") +
+        ggpubr::theme_pubclean() + theme(legend.title = element_blank()) + geom_smooth()
+
+ggsave(filename = "Plots/modulesize_graph_relevance.png", plot = p2, units = c("cm"),
+     width = 30, height = 20, dpi = 200, limitsize = FALSE)
+
+
+ggsave(filename = "Plots/modulesize_graph_relevance_prueba.png", plot = p2, units = c("cm"),
+     width = 15, height = 10, dpi = 200, limitsize = FALSE)
 ```
 
+```{r}
+# association 
+chisq.test(table_graph1$infomap, table_graph2$infomap)
+
+library(vcd)
+assocstats(xtabs(~table_graph1$infomap+table_graph2$infomap))
+```
+
+
+
 ## Projected modules 
+
+### distribution of degree plot
 
 ```{r echo=FALSE}
 #ggplot(data = data.frame(names_nod = names(dataHist), data = as.vector(dataHist)), mapping = aes(x=names_nod, y=data)) + geom_point()
@@ -138,17 +171,85 @@ plot_degree_proj <- data.frame(num_nodes = c(dataProj$Freq, dataProj2$Freq),
     
 #    type = rep(c("earlyOnset", "lateOnset"), each = 16319))
     
-ggplot(data = plot_degree_proj, mapping = aes(x= Degree, y = num_nodes, col = type)) + 
+p3 <- ggplot(data = plot_degree_proj, mapping = aes(x= Degree, y = num_nodes, col = type)) + 
         geom_point(alpha = 0.6, size = 2) + scale_x_log10() + scale_y_log10() + 
         ggthemes::scale_color_ptol() + ylab("Number of nodes") + 
         ggpubr::theme_pubclean() + theme(legend.title = element_blank())
+
+ggsave(filename = "Plots/Degree_graph_flow.png", plot = p3, units = c("cm"),
+     width = 30, height = 20, dpi = 200, limitsize = FALSE)
+
+ggsave(filename = "Plots/Degree_graph_flow_prueba.png", plot = p3, units = c("cm"),
+     width = 15, height = 10, dpi = 200, limitsize = FALSE)
 ```
+```{r}
+# association 
+chisq.test(prop_graphs_flow[[1]]$nodes$degree, prop_graphs_flow[[2]]$nodes$degree)
+
+library(vcd)
+assocstats(xtabs(~prop_graphs_flow[[1]]$nodes$degree+prop_graphs_flow[[2]]$nodes$degree))
+```
+
 
 
 ```{r}
 table_graph1 %>% filter(infomap == 2933)
+
+#------ number of modules without the module with a unique element -------------
+# early onset 
+filteredModules1 <- table_graph1 %>% filter(degree != 0)
+# without 
+length(unique(filteredModules1$infomap))
+# all 
+length(unique(table_graph1$infomap))
+
+# late onset 
+filteredModules2 <- table_graph2 %>% filter(degree != 0)
+# without
+length(unique(filteredModules2$infomap))
+# all
+length(unique(table_graph2$infomap))
 ```
 
+```{r}
+#---------- analysis of the amount of genes in each module-------------
+# early onset
+dataModules1 %>% filter(Freq > 1) %>% summarize(quantil = quantile(Freq, probs = 0.9))
+
+dataModules1 %>% filter(Freq > 121)
+dataModules1 %>% filter(Var1 == 127)
+dataModules1 %>% filter(Var1 == 2933)
+
+# late onset
+dataModules2 %>% filter(Freq > 1) %>% summarize(quantil = quantile(Freq, probs = 0.9))
+
+dataModules2 %>% filter(Freq > 115)
+
+
+# degree 
+prop_graphs_flow[[1]]$nodes %>% filter(degree > 100)
+
+prop_graphs_flow[[2]]$nodes %>% filter(degree > 100)
+```
+
+```{r}
+# revisar que genes se comparten en los modulos que interaccionan con los componentes celulares
+
+modulo1_5 <- filteredModules1 %>% filter(infomap == 5)
+
+modulo2_1 <- filteredModules2 %>% filter(infomap == 1)
+
+length(which(modulo1_5$name %in% modulo2_1$name))
+
+
+# revisar que genes se comparten en los modulos que interaccionan con "neuron part" en ambas redes 
+
+modulo1_2 <- filteredModules1 %>% filter(infomap == 2)
+
+modulo2_2 <- filteredModules2 %>% filter(infomap == 2)
+
+length(which(modulo1_2$name %in% modulo2_2$name))
+```
 
 
 
