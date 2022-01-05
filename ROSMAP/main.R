@@ -11,9 +11,13 @@ main <- function(directory = "~/"){
   
   
   # data analysis with edgeR
+  # It normalize the count data and compare the expression of the genes in each group. 
   source("analysisDifferenceExpression.R")
-  top2 <- analysisDifferenceExpression(countData = data$countData, 
-                               colData = data$colData, samplesToStudy = samplesToStudy)
+  DGEA <- analysisDifferenceExpression(countData = data$countData, 
+                                       colData = data$colData, samplesToStudy = samplesToStudy, 
+                                       makePlotBCV = FALSE, makePlotSmear = TRUE)
+  top2 <- DGEA$top2
+  countDataNormalized <- DGEA$countDataNormalized
   
   # data analysis with GAGE
   source("analysisGAGE.R")
