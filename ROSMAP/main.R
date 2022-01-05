@@ -9,9 +9,6 @@ main <- function(directory = "~/"){
   samplesToStudy <- dataPreprocessed$ListSamplesToStudy
   data <- dataPreprocessed$ListData
   
-  # merge the files of the counts 
-  source("mergeCounts.R")
-  RNAseqCounts <- mergeCounts(counts = "normalized")
   
   # get the metadata of the necessary samples for the study
   source("getSamplesToStudy.R")
