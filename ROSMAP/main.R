@@ -10,11 +10,6 @@ main <- function(directory = "~/"){
   data <- dataPreprocessed$ListData
   
   
-  # format the data for the analysis
-  source("formatData.R")
-  data <- formatData(RNAseqCounts = RNAseqCounts, 
-                     samplesToStudy = samplesToStudy)
-  
   # data analysis with edgeR
   source("analysisDifferenceExpression.R")
   top2 <- analysisDifferenceExpression(countData = data$countData, 

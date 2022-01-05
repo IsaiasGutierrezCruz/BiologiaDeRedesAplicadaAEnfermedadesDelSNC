@@ -17,4 +17,11 @@ DataPreprocessingFunction <- function(){
   samplesToStudy <- getSamplesToStudy(RNAseqCounts = RNAseqCounts, 
                                       FullMeta = FullMeta, assay = 'rnaSeq', 
                                       cogdx = 4)
+  # format the data for the analysis
+  source("DataPreprocessing/formatData.R")
+  data <- formatData(RNAseqCounts = RNAseqCounts, 
+                     samplesToStudy = samplesToStudy, 
+                     group_names = c("EarlyOnset", "LateOnset"))
+  
+  list(ListSamplesToStudy = samplesToStudy, ListData = data)
 }
