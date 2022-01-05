@@ -29,7 +29,10 @@ main <- function(directory = "~/"){
   
   # add information about the genes to top2
   source("addInformationTo_top2.R")
-  top2 <- addInformationTo_top2(top2 = top2)
+  top2$table <- addInformationTo_top2(table_to_change = top2$table,
+                                      info_to_add = c("SYMBOL", "ENTREZID", "GENENAME"), 
+                                      name_of_cols = c("symbol", "entrez", "name"), 
+                                      delete_NA = TRUE)
   
   # representation of the pathways
   source("analysisPathview.R")
