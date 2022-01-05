@@ -37,7 +37,8 @@ main <- function(directory = "~/"){
   # representation of the pathways
   source("analysisPathview.R")
   tmp <- analysisPathview(top2 = top2, 
-                          earlyOnset_v_LateOnset.SigBOTHDIR = earlyOnset_v_LateOnset.SigBOTHDIR)
+                          earlyOnset_v_LateOnset.SigBOTHDIR = earlyOnset_v_LateOnset.SigBOTHDIR,
+                          start_id = 1L, stop_id = 8L)
   
   # analysis and plots of the graphs
   pathways_names <- c("Oxidative phosphorylation", "Cardiac muscle contraction") 
