@@ -22,7 +22,10 @@ main <- function(directory = "~/"){
   # data analysis with GAGE
   source("analysisGAGE.R")
   earlyOnset_v_LateOnset.SigBOTHDIR <- analysisGAGE(countData = data$countData, 
-                                                    samplesToStudy = samplesToStudy)
+                                                    samplesToStudy = samplesToStudy, 
+                                                    range_kegg_pathways = c(1, 131),
+                                                    same_dir = FALSE, 
+                                                    output_path = "Plots/earlyOnset_v_lateOnsetGAGE")
   
   # add information about the genes to top2
   source("addInformationTo_top2.R")

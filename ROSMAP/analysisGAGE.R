@@ -1,4 +1,25 @@
-analysisGAGE <- function(countData, samplesToStudy){
+analysisGAGE <- function(countData, samplesToStudy, range_kegg_pathways = c(1, 131), same_dir = FALSE, output_path = "Plots/earlyOnset_v_lateOnsetGAGE"){
+  # ---- Description ----
+  # It identify the pathways with perturbations given the values of RNAseq
+  #
+  # ---- Parameters ----
+  # countData: data frame
+  #     Data frame with the counts from the RNASeq assay. In the columns are represented 
+  #     the samples' names and in the rows are represented the genes' names 
+  # SamplesToStudy: list
+  #     A list that contains the names of samples in control and study group
+  # range_kegg_pathways: numeric
+  #     A numeric vector with the first and last pathways to be analyzed from kegg
+  # same_dir: logical 
+  #     A logical value to consider perturbations in same direction or in both directions
+  # output_path: character 
+  #     Path where the plot will be keep 
+  # 
+  # ---- Returns ----
+  # controlGroup_v_studyGroup: list
+  #     A list that contains the data frame genes perturbed in each pathway (index = 1)
+  #     and un data frame with the statistic of each pathway (index = 2)
+  
   library("AnnotationDbi")
   library("org.Hs.eg.db")
   library(gage)
@@ -15,7 +36,7 @@ analysisGAGE <- function(countData, samplesToStudy){
   rownames(countData) <- nombres$entrez
   
   
-  # remove NA values 
+  # remove NA values (genes without the entrez ID)
   good <- complete.cases(rownames(countData))
   countData <- countData[good, ]
   
@@ -23,29 +44,22 @@ analysisGAGE <- function(countData, samplesToStudy){
   data(kegg.sets.hs)
   data(sigmet.idx.hs)
   kegg.sets.hs <- kegg.sets.hs[sigmet.idx.hs]
-  kegg.sets.hs <- kegg.sets.hs[1:131]
+  kegg.sets.hs <- kegg.sets.hs[ range_kegg_pathways[1] : range_kegg_pathways[2] ]
   
   # groups 
-  earlyOnset <- which(colnames(countData)%in%samplesToStudy$LessThan70Years)
-  lateOnset <- which(colnames(countData)%in%samplesToStudy$GreaterThan70Years)
+  control_group <- which(colnames(countData)%in%samplesToStudy[[1]])
+  study_group <- which(colnames(countData)%in%samplesToStudy[[2]])
   
-  earlyOnset_v_LateOnsetSAMEDIR <- gage(exprs = countData, 
-                                        gsets = kegg.sets.hs, 
-                                        ref = earlyOnset,
-                                        samp = lateOnset, 
-                                        compare = "unpaired",
-                                        same.dir = TRUE)
+  # gage analysis
+  controlGroup_v_studyGroupSAMEDIR <- gage(exprs = countData, 
+                                           gsets = kegg.sets.hs, 
+                                           ref = control_group,
+                                           samp = study_group, 
+                                           compare = "unpaired",
+                                           same.dir = same_dir)
   
-  earlyOnset_v_LateOnset.SigSAMEDIR <- sigGeneSet(earlyOnset_v_LateOnsetSAMEDIR)
+  controlGroup_v_studyGroup <- sigGeneSet(controlGroup_v_studyGroupSAMEDIR, 
+                                          outname = output_path)
   
-  earlyOnset_v_LateOnsetBOTHDIR <- gage(exprs = countData, 
-                                        gsets = kegg.sets.hs, 
-                                        ref = earlyOnset,
-                                        samp = lateOnset, 
-                                        compare = "unpaired",
-                                        same.dir = FALSE)
-  
-  earlyOnset_v_LateOnset.SigBOTHDIR <- sigGeneSet(earlyOnset_v_LateOnsetBOTHDIR, 
-                                                  outname = "Plots/earlyOnset_v_lateOnsetGAGE")
-  earlyOnset_v_LateOnset.SigBOTHDIR
+  controlGroup_v_studyGroup
 }
