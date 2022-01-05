@@ -2,9 +2,12 @@ main <- function(directory = "~/"){
   setwd(directory)
   dir.create("Plots")
   
-  # merge the metadata  
-  source("mergeMetadata.R")
-  FullMeta <- mergeMetadata() 
+  # ----------- Pre-processing of the data -----------------
+  source("DataPreprocessingFunction.R")
+  dataPreprocessed <- DataPreprocessingFunction()
+  
+  samplesToStudy <- dataPreprocessed$ListSamplesToStudy
+  data <- dataPreprocessed$ListData
   
   # merge the files of the counts 
   source("mergeCounts.R")
