@@ -10,11 +10,6 @@ main <- function(directory = "~/"){
   data <- dataPreprocessed$ListData
   
   
-  # get the metadata of the necessary samples for the study
-  source("getSamplesToStudy.R")
-  samplesToStudy <- getSamplesToStudy(RNAseqCounts = RNAseqCounts, 
-                                      FullMeta = FullMeta)
-  
   # format the data for the analysis
   source("formatData.R")
   data <- formatData(RNAseqCounts = RNAseqCounts, 

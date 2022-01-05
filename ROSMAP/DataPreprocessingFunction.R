@@ -12,4 +12,9 @@ DataPreprocessingFunction <- function(){
                               num_to_remove_beginning = 0L, num_to_remove_end = 2L, 
                               num_col_with_name = c(1, 2))
   
+  # get the metadata of the necessary samples to the study
+  source("DataPreprocessing/getSamplesToStudy.R")
+  samplesToStudy <- getSamplesToStudy(RNAseqCounts = RNAseqCounts, 
+                                      FullMeta = FullMeta, assay = 'rnaSeq', 
+                                      cogdx = 4)
 }
