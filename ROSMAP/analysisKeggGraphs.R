@@ -28,24 +28,29 @@ analysisKeggGraphs <- function(pathways_names, objects_names, species_name, data
   library(ggraph)
   library(dplyr)
   library(ggpubr)
+  
   source("supportFunctions/calculateGraphProperties.R")
   humanKegg <- pathways(species_name, database) 
   
-  prop_graphs <- list()
+  # get the networks
+  graphs <- list()
   for(i in seq_along(pathways_names)){
-    
-    graph <- humanKegg[[pathways_names[i]]]
+    graph <- humanKegg[[ pathways_names[i] ]]
     graphNEL <- pathwayGraph(graph)
-    graphIgraph <- graph_from_graphnel(graphNEL)
+    graphs[[i]] <- graph_from_graphnel(graphNEL)
+  }  
     
-    prop <- calculateGraphProperties(networks = list(graphIgraph), names = c(objects_names[i]), 
+  # calculate the network properties  
+  prop <- calculateGraphProperties(networks = graphs, names = objects_names, 
                              calculate_communities = FALSE, keep_network_info = TRUE)
     
-    prop_graphs[[i]] <- prop[[1]]
-    graphIgraph <- prop[[2]][[1]]
-    
+  prop_graphs <- prop$prop_graphs
+  graphs <- prop$graph_with_properties
+  
+  # plot the networks 
+  for (i in seq_along(pathways_names)){
     # ---- PLOTS ----
-    gt <- as_tbl_graph(graphIgraph)
+    gt <- as_tbl_graph(graphs[[1]])
     
     Plotg <- gt %>% 
       ggraph(layout = 'kk') + 
