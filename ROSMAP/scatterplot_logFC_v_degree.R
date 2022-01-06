@@ -32,7 +32,7 @@ scatterplot_logFC_v_degree <- function(prop_graphs, objects_names, top2){
   F1 <- ggplot(scatterplots_dataframes$OxiPho, aes(x = degree, y = logFC, color = degree)) + 
     geom_point(size = 3) + 
     geom_label_repel(
-      data = OxiPho_scatterplot %>% filter(names == "ATPase H+ transporting V0 subunit a1"), 
+      data = scatterplots_dataframes$OxiPho %>% filter(names == "ATPase H+ transporting V0 subunit a1"), 
       aes(label = names),
       nudge_x = -20, 
       nudge_y = -0.08,
@@ -45,7 +45,7 @@ scatterplot_logFC_v_degree <- function(prop_graphs, objects_names, top2){
   F2 <- ggplot(scatterplots_dataframes$CardiacM, aes(x = degree, y = logFC, color = degree)) + 
     geom_point(size = 4) + 
     geom_label_repel(
-      data = CardiacM_scatterplot %>% filter(logFC > 0.5 | logFC < -0.25), 
+      data = scatterplots_dataframes$CardiacM %>% filter(logFC > 0.5 | logFC < -0.25), 
       aes(label = names),
       nudge_x = 0, 
       nudge_y = -0.08,
