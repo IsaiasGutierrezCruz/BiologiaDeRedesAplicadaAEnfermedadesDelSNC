@@ -51,11 +51,11 @@ main <- function(directory = "~/"){
   etiquetas <- c("Red de la Fosforilacion Oxidativa", 
                  "Red de la Contraccion del Musculo Cardiaco")
   
-  source("analysisGraphs.R")
-  prop_graphs <- analysisGraphs(pathways_names = pathways_names, 
+  source("analysisKeggGraphs.R")
+  prop_graphs <- analysisKeggGraphs(pathways_names = pathways_names, 
                                 objects_names = objects_names,
                                 species_name = "hsapiens", database = "kegg",
-                                etiquetas = etiquetas)
+                                etiquetas = etiquetas, output_path = "Plots/")
   
   
   # Scatter plots 
