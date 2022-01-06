@@ -3,6 +3,7 @@ main <- function(directory = "~/"){
   dir.create("Plots")
   
   # ----------- Pre-processing of the data -----------------
+  
   source("DataPreprocessingFunction.R")
   dataPreprocessed <- DataPreprocessingFunction()
   
@@ -10,9 +11,11 @@ main <- function(directory = "~/"){
   data <- dataPreprocessed$ListData
   
   
+  # ----------- Differential gene expression analysis and pathways perturbed ------------------
+  
   # data analysis with edgeR
   # It normalize the count data and compare the expression of the genes in each group. 
-  source("analysisDifferenceExpression.R")
+  source("DGEAandPathwaysPerturbed/analysisDifferenceExpression.R")
   DGEA <- analysisDifferenceExpression(countData = data$countData, 
                                        colData = data$colData, samplesToStudy = samplesToStudy, 
                                        makePlotBCV = FALSE, makePlotSmear = TRUE)
@@ -20,7 +23,7 @@ main <- function(directory = "~/"){
   countDataNormalized <- DGEA$countDataNormalized
   
   # data analysis with GAGE
-  source("analysisGAGE.R")
+  source("DGEAandPathwaysPerturbed/analysisGAGE.R")
   earlyOnset_v_LateOnset.SigBOTHDIR <- analysisGAGE(countData = data$countData, 
                                                     samplesToStudy = samplesToStudy, 
                                                     range_kegg_pathways = c(1, 131),
@@ -28,17 +31,19 @@ main <- function(directory = "~/"){
                                                     output_path = "Plots/earlyOnset_v_lateOnsetGAGE")
   
   # add information about the genes to top2
-  source("addInformationTo_top2.R")
+  source("DGEAandPathwaysPerturbed/addInformationTo_top2.R")
   top2$table <- addInformationTo_top2(table_to_change = top2$table,
                                       info_to_add = c("SYMBOL", "ENTREZID", "GENENAME"), 
                                       name_of_cols = c("symbol", "entrez", "name"), 
                                       delete_NA = TRUE)
   
   # representation of the pathways
-  source("analysisPathview.R")
+  source("DGEAandPathwaysPerturbed/analysisPathview.R")
   tmp <- analysisPathview(top2 = top2, 
                           earlyOnset_v_LateOnset.SigBOTHDIR = earlyOnset_v_LateOnset.SigBOTHDIR,
                           start_id = 1L, stop_id = 8L)
+  
+  # ------------------ Analysis and plots of the graphs -----------------------------
   
   # analysis and plots of the graphs
   pathways_names <- c("Oxidative phosphorylation", "Cardiac muscle contraction") 
@@ -53,7 +58,7 @@ main <- function(directory = "~/"){
                                 etiquetas = etiquetas)
   
   
-  # -------------------- Scatter plots -------------------------------------
+  # Scatter plots 
   objects_names <- c("OxiPho", "CardiacM") 
   source("scatterplot_logFC_v_degree.R")
   scatterplot_logFC_v_degree(prop_graphs = prop_graphs, objects_names = objects_names, 
