@@ -1,4 +1,19 @@
 scatterplot_logFC_v_degree <- function(prop_graphs, objects_names, top2){
+  # ---- Description ----
+  # It make a scatter plot to each element in prop_graphs condidering the degree 
+  # logFC
+  #
+  # ---- Parameters ----
+  # prop_graphs: list
+  #     A list with the properties of networks
+  # objects_names: character
+  #     Character vector with abbreviations of the pathways names
+  # top2: list
+  #     A list that contains the data of the gene expression comparison
+  # 
+  
+  # It make a list of data frames with the properties degree, logFC and names of genes 
+  # to each element in "prop_graphs"
   scatterplots_dataframes <- list()
   
   for (i in seq_along(prop_graphs)){

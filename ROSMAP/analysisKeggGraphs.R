@@ -1,6 +1,6 @@
 analysisKeggGraphs <- function(pathways_names, objects_names, species_name, database, etiquetas, output_path = "Plots/"){
   # ---- Description ----
-  # It analyze specific Kegg networks to calculate their network properties and make plots considering the nodes' degree
+  # It analyze specific Kegg networks to calculate their network properties and make plots of the networks
   #
   # ---- Parameters ----
   # pathways_names: character
