@@ -46,7 +46,7 @@ calculateGraphProperties <- function(networks, names, calculate_communities = FA
     V( networks[[i]] )$transitivity <- transitivity( networks[[i]] , type = "local", isolates = "zero")
     
     if (calculate_communities){
-      # comunidades 
+      # communities
       comm.louvain <- cluster_louvain( networks[[i]] )
       V( networks[[i]] )$comm.louvain <- membership(comm.louvain)
       

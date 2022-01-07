@@ -1,6 +1,6 @@
 scatterplot_logFC_v_degree <- function(prop_graphs, objects_names, top2){
   # ---- Description ----
-  # It make a scatter plot to each element in prop_graphs condidering the degree 
+  # It make a scatter plot to each element in prop_graphs considering the degree 
   # logFC
   #
   # ---- Parameters ----

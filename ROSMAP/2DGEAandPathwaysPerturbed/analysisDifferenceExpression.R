@@ -1,5 +1,6 @@
 analysisDifferenceExpression <- function(countData, colData, samplesToStudy, 
-                                         makePlotBCV = FALSE, makePlotSmear = TRUE){
+                                         makePlotBCV = FALSE, makePlotSmear = TRUE,
+                                         output_path="Plots/plotSmearAnalysis_edgeR.pdf"){
   # ---- Description ----
   # It normalize the count data and compare the expression of the genes in each group. 
   # It also make the plots BCV and Smear 
@@ -59,7 +60,7 @@ analysisDifferenceExpression <- function(countData, colData, samplesToStudy,
     
     detags <- rownames(y)[as.logical(de)]
     
-    pdf("Plots/plotSmearAnalysis_edgeR.pdf", 
+    pdf(output_path, 
         width = 8, height = 7, 
         bg = "white",
         colormodel = "cmyk",
