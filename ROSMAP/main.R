@@ -65,5 +65,26 @@ main <- function(directory = "~/"){
   scatterplot_logFC_v_degree(prop_graphs = prop_graphs, objects_names = objects_names, 
                              top2 = top2)
   
-  # ----------------- 
+  # ----------------------- Relevance Networks --------------------------------
+  endControlGroup <- length(samplesToStudy[[1]])
+  endStudyGroup <- length(samplesToStudy[[2]])
+  source("relevanceNetworks.R")
+  # control group
+  graphEarlyOnset <- relevanceNetworks(dataCount= countDataNormalized[, 1:endControlGroup])
+  # study group
+  graphLateOnset <- relevanceNetworks(dataCount = countDataNormalized[, (endControlGroup + 1):(endControlGroup + endStudyGroup)])
+  
+  
+  
+  
+  
+  
+  
+  saveRDS(prop_graphs, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/prop_graphs.rds")
+  
+  
+  # ---- get the formats gml  ----
+  write_graph(mimgraph, file = "E:/DataROSMAPNetwork/Data/pruebas_graphs/earlyOnset_graph.gml", format = "gml")
+  
+  write_graph(mimgraph_lo, file = "E:/DataROSMAPNetwork/Data/pruebas_graphs/lateOnset_graph.gml", format = "gml")
 }
