@@ -24,7 +24,7 @@ moduleProjection <- function(graphs, modules, names = c("earlyOnset", "lateOnset
   
   
   if (!length(graphs) == length(modules)){
-    stop("The number of netwroks and names are different")
+    stop("The number of netwroks and modules are different")
   }
   
   for (i in seq_along(graphs)) {

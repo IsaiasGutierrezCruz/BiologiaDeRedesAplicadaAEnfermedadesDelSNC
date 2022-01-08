@@ -127,7 +127,10 @@ main <- function(directory = "~/"){
                    output_path = "Results/ModuleEnrichmentAndProjection")
   
   # module enrichment
+  # NOTE: expensive computational cost
   source("5ModuleEnrichmentAndProjection/moduleEnrichment.R")
-  
-  
+  moduleEnrichment(graphs = graphs_with_modules, modules = modules_graphsCoexp, 
+                   names = c("earlyOnset", "lateOnset"), 
+                   output_path = "Results/ModuleEnrichmentAndProjection",
+                   pvalueThreshold = 0.05)
 }
