@@ -113,8 +113,21 @@ main <- function(directory = "~/"){
   g_lateOnset = readRDS(file = "Results/CoexpressionGraphs/graphCoexp_lateOnset.rds")
   
   source("5ModuleEnrichmentAndProjection/moduleDetection.R")
-  modules_graphsCoexp <- moduleDetection(graphs = list(g_earlyOnset, g_lateOnset), 
+  modulesAndGraphs <- moduleDetection(graphs = list(g_earlyOnset, g_lateOnset), 
                                          names = c("earlyOnset", "lateOnset"), 
                                          output_path = "Results/ModuleEnrichmentAndProjection")
+  
+  modules_graphsCoexp <- modulesAndGraphs[[1]]
+  graphs_with_modules <- modulesAndGraphs[[2]]
+  
+  # modules projection
+  source("5ModuleEnrichmentAndProjection/moduleProjection.R")
+  moduleProjection(graphs = graphs_with_modules, modules = modules_graphsCoexp, 
+                   names = c("earlyOnset", "lateOnset"), 
+                   output_path = "Results/ModuleEnrichmentAndProjection")
+  
+  # module enrichment
+  source("5ModuleEnrichmentAndProjection/moduleEnrichment.R")
+  
   
 }

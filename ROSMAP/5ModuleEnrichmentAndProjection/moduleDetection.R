@@ -13,7 +13,8 @@ moduleDetection <- function(graphs, names = c("earlyOnset", "lateOnset"), output
   # 
   # ---- Returns ----
   # modules_graphsCoexp: list 
-  #     A list with information of the graphs' modules 
+  #     A list of lists. The first list has information of the graphs' modules 
+  #     and the second list has the graphs with the modules 
   
   #libraries
   library(igraph)
@@ -45,5 +46,7 @@ moduleDetection <- function(graphs, names = c("earlyOnset", "lateOnset"), output
     saveRDS(object = modules, file = paste0(output_path, "/modules_", names[i], ".RDS"))
   }
   
-  modules_graphsCoexp
+  result <- list(modules_graphsCoexp = modules_graphsCoexp, graphs_with_modules = graphs)
+  
+  result
 }
