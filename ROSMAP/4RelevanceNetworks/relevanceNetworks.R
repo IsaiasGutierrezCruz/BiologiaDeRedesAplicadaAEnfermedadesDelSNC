@@ -38,10 +38,10 @@ relevanceNetworks <- function(dataCount){
 
   # relevant network 
   umbral <- quantile(mim, 0.99, na.rm = TRUE)
-  mim2 <- ifelse(mim < umbral, 0, 1)
-  rm(mim)
-  mim2[is.na(mim2)] <- 0
-  mimgraph <- graph_from_adjacency_matrix(mim2, mode = "undirected")
+  mim <- ifelse(mim < umbral, 0, 1)
+  #rm(mim)
+  mim[is.na(mim)] <- 0
+  mimgraph <- graph_from_adjacency_matrix(mim, mode = "undirected")
   
   mimgraph
 }

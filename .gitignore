@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 ROSMAP/Data
+ROSMAP/Results
 .rds
 ROSMAP/prueba_aracne/Data
 ROSMAP/PruebaModuleEnrichmentAndProjection/results

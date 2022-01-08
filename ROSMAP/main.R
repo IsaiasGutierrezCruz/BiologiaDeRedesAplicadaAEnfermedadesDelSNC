@@ -1,8 +1,10 @@
 main <- function(directory = "~/"){
   setwd(directory)
   dir.create("Plots")
-  
-  # ----------- Pre-processing of the data -----------------
+  dir.create("Results")
+  # -------------------------------------------------------------------------------------------
+  # --------------------------- Pre-processing of the data ------------------------------------
+  # -------------------------------------------------------------------------------------------
   
   source("DataPreprocessingFunction.R")
   dataPreprocessed <- DataPreprocessingFunction()
@@ -10,8 +12,9 @@ main <- function(directory = "~/"){
   samplesToStudy <- dataPreprocessed$ListSamplesToStudy
   data <- dataPreprocessed$ListData
   
-  
+  # -------------------------------------------------------------------------------------------
   # ----------- Differential gene expression analysis and pathways perturbed ------------------
+  # -------------------------------------------------------------------------------------------
   
   # data analysis with edgeR
   # It normalize the count data and compare the expression of the genes in each group. 
@@ -44,7 +47,9 @@ main <- function(directory = "~/"){
                           earlyOnset_v_LateOnset.SigBOTHDIR = earlyOnset_v_LateOnset.SigBOTHDIR,
                           start_id = 1L, stop_id = 8L)
   
-  # ------------------ Analysis and plots of the graphs -----------------------------
+  # -------------------------------------------------------------------------------------------
+  # --------------------------- Analysis and plots of the graphs ------------------------------
+  # -------------------------------------------------------------------------------------------
   
   # analysis and plots of the graphs
   pathways_names <- c("Oxidative phosphorylation", "Cardiac muscle contraction") 
@@ -65,26 +70,40 @@ main <- function(directory = "~/"){
   scatterplot_logFC_v_degree(prop_graphs = prop_graphs, objects_names = objects_names, 
                              top2 = top2)
   
-  # ----------------------- Relevance Networks --------------------------------
+  # -------------------------------------------------------------------------------------------
+  # --------------------------------- Relevance Networks --------------------------------------
+  # -------------------------------------------------------------------------------------------
+  
   endControlGroup <- length(samplesToStudy[[1]])
   endStudyGroup <- length(samplesToStudy[[2]])
-  source("relevanceNetworks.R")
-  # control group
+  source("4RelevanceNetworks/relevanceNetworks.R")
+  # get the co-expression networks 
   graphEarlyOnset <- relevanceNetworks(dataCount= countDataNormalized[, 1:endControlGroup])
-  # study group
   graphLateOnset <- relevanceNetworks(dataCount = countDataNormalized[, (endControlGroup + 1):(endControlGroup + endStudyGroup)])
   
+  # get the networks' properties 
+  source("supportFunctions/calculateGraphProperties.R")
+  
+  propAndgraphs_coexp <- calculateGraphProperties(networks = list(graphEarlyOnset, graphLateOnset), 
+                                                names = c("graphEarlyOnset", "graphLateOnset"),
+                                                calculate_communities = TRUE,
+                                                keep_network_info = TRUE)
+  
+  # keep the properties of the co-expression networks 
+  library(igraph)
+  
+  saveRDS(propAndgraphs_coexp[[1]], file = "Results/CoexpressionGraphs/prop_graphsCoexp.rds")
+  
+  # keep the co-expression networks
+  saveRDS(propAndgraphs_coexp[[2]][[1]], file = "Results/CoexpressionGraphs/graphCoexp_earlyOnset.rds")
+  write_graph(propAndgraphs_coexp[[2]][[1]], file = "Results/CoexpressionGraphs/graphcoexp_earlyonset.gml", format = "gml")
+  
+  saveRDS(propAndgraphs_coexp[[2]][[2]], file = "Results/CoexpressionGraphs/graphCoexp_lateOnset.rds")
+  write_graph(propAndgraphs_coexp[[2]][[2]], file = "Results/CoexpressionGraphs/graphcoexp_lateonset.gml", format = "gml")
   
   
   
   
   
   
-  saveRDS(prop_graphs, file = "E:/DataROSMAPNetwork/DataOnlyWithSymbol/prop_graphs.rds")
-  
-  
-  # ---- get the formats gml  ----
-  write_graph(mimgraph, file = "E:/DataROSMAPNetwork/Data/pruebas_graphs/earlyOnset_graph.gml", format = "gml")
-  
-  write_graph(mimgraph_lo, file = "E:/DataROSMAPNetwork/Data/pruebas_graphs/lateOnset_graph.gml", format = "gml")
 }
