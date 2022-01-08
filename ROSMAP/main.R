@@ -107,6 +107,14 @@ main <- function(directory = "~/"){
   # -------------------------- Module Enrichment and Projection -------------------------------
   # -------------------------------------------------------------------------------------------
   
+  # module detection
   
+  g_earlyOnset = readRDS(file = "Results/CoexpressionGraphs/graphCoexp_earlyOnset.rds")
+  g_lateOnset = readRDS(file = "Results/CoexpressionGraphs/graphCoexp_lateOnset.rds")
+  
+  source("5ModuleEnrichmentAndProjection/moduleDetection.R")
+  modules_graphsCoexp <- moduleDetection(graphs = list(g_earlyOnset, g_lateOnset), 
+                                         names = c("earlyOnset", "lateOnset"), 
+                                         output_path = "Results/ModuleEnrichmentAndProjection")
   
 }
