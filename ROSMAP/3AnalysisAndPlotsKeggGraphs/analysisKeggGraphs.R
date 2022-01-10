@@ -50,7 +50,7 @@ analysisKeggGraphs <- function(pathways_names, objects_names, species_name, data
   # plot the networks 
   for (i in seq_along(pathways_names)){
     # ---- PLOTS ----
-    gt <- as_tbl_graph(graphs[[1]])
+    gt <- as_tbl_graph(graphs[[i]])
     
     Plotg <- gt %>% 
       ggraph(layout = 'kk') + 
