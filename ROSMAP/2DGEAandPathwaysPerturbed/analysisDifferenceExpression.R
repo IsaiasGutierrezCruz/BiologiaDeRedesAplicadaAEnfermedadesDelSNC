@@ -1,6 +1,6 @@
 analysisDifferenceExpression <- function(countData, colData, samplesToStudy, 
                                          makePlotBCV = FALSE, makePlotSmear = TRUE,
-                                         output_path="Plots/plotSmearAnalysis_edgeR.pdf"){
+                                         output_path="Plots"){
   # ---- Description ----
   # It normalize the count data and compare the expression of the genes in each group. 
   # It also make the plots BCV and Smear 
@@ -36,19 +36,27 @@ analysisDifferenceExpression <- function(countData, colData, samplesToStudy,
   
   y$samples$lib.size <- colSums(y$counts)
   
-  # normalizar 
+  # normalize
   y <- calcNormFactors(y)
-  # estimación de la dispesion
+  # dispersion estimation
   y <- estimateCommonDisp(y, verbose = TRUE)
   y <- estimateTagwiseDisp(y)
   
   
   # plot BCV
   if (makePlotBCV){
+    pdf(paste0(output_path, "/plotBCVAnalysis_edgeR.pdf"), 
+        width = 8, height = 7, 
+        bg = "white",
+        colormodel = "cmyk",
+        paper = "A4")
+    
     plotBCV(y)
+    
+    dev.off()
   }
   
-  # pruebas 
+  # proofs
   et <- exactTest(y)
   
   top2 <- topTags(et, n = nrow(y$counts))
@@ -60,7 +68,7 @@ analysisDifferenceExpression <- function(countData, colData, samplesToStudy,
     
     detags <- rownames(y)[as.logical(de)]
     
-    pdf(output_path, 
+    pdf(paste0(output_path, "/plotSmearAnalysis_edgeR.pdf"), 
         width = 8, height = 7, 
         bg = "white",
         colormodel = "cmyk",

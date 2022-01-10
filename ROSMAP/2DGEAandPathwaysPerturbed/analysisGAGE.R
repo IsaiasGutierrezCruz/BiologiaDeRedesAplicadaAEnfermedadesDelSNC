@@ -59,7 +59,8 @@ analysisGAGE <- function(countData, samplesToStudy, range_kegg_pathways = c(1, 1
                                            same.dir = same_dir)
   
   controlGroup_v_studyGroup <- sigGeneSet(controlGroup_v_studyGroupSAMEDIR, 
-                                          outname = output_path)
+                                          outname = output_path,
+                                          pdf.size = c(9, 8))
   
   controlGroup_v_studyGroup
 }
