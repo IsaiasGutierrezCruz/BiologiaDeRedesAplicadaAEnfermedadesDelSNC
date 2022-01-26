@@ -21,7 +21,7 @@ main <- function(directory = "~/"){
   source("2DGEAandPathwaysPerturbed/analysisDifferenceExpression.R")
   DGEA <- analysisDifferenceExpression(countData = data$countData, 
                                        colData = data$colData, samplesToStudy = samplesToStudy, 
-                                       makePlotBCV = TRUE, makePlotSmear = TRUE,
+                                       makePlotBCV = FALSE, makePlotSmear = TRUE,
                                        output_path="Plots")
   top2 <- DGEA$top2
   countDataNormalized <- DGEA$countDataNormalized

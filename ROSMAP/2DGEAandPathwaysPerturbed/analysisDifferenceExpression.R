@@ -64,7 +64,7 @@ analysisDifferenceExpression <- function(countData, colData, samplesToStudy,
   if (makePlotSmear){
     # plot Smear 
     de <- decideTestsDGE(et, p.value = 0.1)
-    summary(de)
+    print(summary(de))
     
     detags <- rownames(y)[as.logical(de)]
     

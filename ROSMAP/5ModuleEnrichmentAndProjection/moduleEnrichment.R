@@ -34,9 +34,9 @@ moduleEnrichment <- function(graphs, modules, names = c("earlyOnset", "lateOnset
   }
   
   
-  for (i in seq_along(graphs)) {
+  for (j in seq_along(graphs)) {
     #get list of communities 
-    l_comm = communities( modules[[i]] )
+    l_comm = communities( modules[[j]] )
     #in case we are provided with communities already identified for each vertex
     ## tmp_df = get.data.frame(g, "vertices")
     ## tmp_l  = lapply(X = unique(tmp_df$infomap), FUN = function(i){
@@ -71,7 +71,7 @@ moduleEnrichment <- function(graphs, modules, names = c("earlyOnset", "lateOnset
     enrichment_df$Adjusted.Pvalue2 = p.adjust(enrichment_df$Pvalue, method = "BH")
     
     write.table(x = enrichment_df, 
-                file = paste0(output_path, "/enrichment_df_", names[i] , ".txt"), 
+                file = paste0(output_path, "/enrichment_df_", names[j] , ".txt"), 
                 row.names = FALSE, 
                 col.names = TRUE, 
                 sep = "\t", 
@@ -82,7 +82,7 @@ moduleEnrichment <- function(graphs, modules, names = c("earlyOnset", "lateOnset
     #bipartite graph
     enrichment_df <- enrichment_df %>% mutate(globalPvalue = p.adjust(Adjusted.Pvalue)) %>% filter(globalPvalue < 0.05)
     
-    saveRDS(enrichment_df, file=paste0(output_path, "/enrichment_df_", names[i], "_filtered.RDS"))
+    saveRDS(enrichment_df, file=paste0(output_path, "/enrichment_df_", names[j], "_filtered.RDS"))
     
     b = graph_from_data_frame(enrichment_df, directed = FALSE)
     
