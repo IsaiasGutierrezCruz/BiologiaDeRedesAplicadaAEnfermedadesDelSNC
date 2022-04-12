@@ -1,4 +1,4 @@
-getSamplesToStudy <- function(RNAseqCounts, FullMeta, assay = 'rnaSeq', cogdx = 4){
+getSamplesToStudy <- function(RNAseqCounts, FullMeta, assay = 'rnaSeq', cogdx = 4, age_cutoff=70){
   # ---- Description ----
   # Selection of the metadata of samples used in the RNAseq assay for later apply several 
   # filters to select specific variables of interest 
@@ -13,6 +13,8 @@ getSamplesToStudy <- function(RNAseqCounts, FullMeta, assay = 'rnaSeq', cogdx = 
   #     Assay of interest 
   # cogdx: integer
   #     Number of the category of cogdx
+  # age_cutoff: integer 
+  #     Integer value with the cutoff to use
   # 
   # ---- Returns ----
   # SamplesToStudy: list
@@ -29,10 +31,11 @@ getSamplesToStudy <- function(RNAseqCounts, FullMeta, assay = 'rnaSeq', cogdx = 
   
   # remove NA values 
   metaSamplesRNAseq <- metaSamplesRNAseq[!is.na(metaSamplesRNAseq$age_first_ad_dx), ]
+  metaSamplesRNAseq[metaSamplesRNAseq$age_first_ad_dx == "90+", ]$age_first_ad_dx <- "90"
   
   # divide the data metadata in groups
-  LessThan70Years <- metaSamplesRNAseq[metaSamplesRNAseq$age_first_ad_dx == "", ]
-  GreaterThan70Years <- metaSamplesRNAseq[metaSamplesRNAseq$age_first_ad_dx != "", ]
+  LessThan70Years <- metaSamplesRNAseq[metaSamplesRNAseq$age_first_ad_dx < age_cutoff, ]
+  GreaterThan70Years <- metaSamplesRNAseq[metaSamplesRNAseq$age_first_ad_dx > age_cutoff, ]
   
   # get the samples of interest 
   samplesLessThan70Years <- LessThan70Years$specimenID

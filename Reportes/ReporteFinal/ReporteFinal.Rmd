@@ -365,6 +365,8 @@ nrow(prop_graphs_relevance_networks$graphEarlyOnset$edges)
 prop_graphs_relevance_networks$graphEarlyOnset$diameter
 # transitividad 
 prop_graphs_relevance_networks$graphEarlyOnset$transitivity
+# nodes not connected 
+nrow(prop_graphs_relevance_networks$graphEarlyOnset$nodes %>% filter(degree != 0))
 
 
 #-------------- Inicio tardio -----------------
@@ -376,6 +378,8 @@ nrow(prop_graphs_relevance_networks$graphLateOnset$edges)
 prop_graphs_relevance_networks$graphLateOnset$diameter
 # transitividad 
 prop_graphs_relevance_networks$graphLateOnset$transitivity
+# nodes not connected 
+nrow(prop_graphs_relevance_networks$graphLateOnset$nodes %>% filter(degree != 0))
 
 
 #-------------- Cntrl -----------------
@@ -387,6 +391,8 @@ nrow(prop_graphs_coexp_cntrl$graphCntrl$edges)
 prop_graphs_coexp_cntrl$graphCntrl$diameter
 # transitividad 
 prop_graphs_coexp_cntrl$graphCntrl$transitivity
+
+
 ```
 
 

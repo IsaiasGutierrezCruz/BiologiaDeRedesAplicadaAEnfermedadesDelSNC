@@ -21,6 +21,10 @@ moduleDetection <- function(graphs, names = c("earlyOnset", "lateOnset"), output
   library(data.table)
   library(tidyverse)
   
+  if (!is.list(graphs)){
+    stop("The parameter graphs should be a list")
+  }
+  
   
   if (!length(graphs) == length(names)){
     stop("The number of netwroks and names are different")
