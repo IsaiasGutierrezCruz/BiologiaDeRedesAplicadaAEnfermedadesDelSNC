@@ -1,13 +1,59 @@
 # Biologia de Redes Aplicada a Enfermedades del Sistema Nervioso Central
 
 ## Resumen 
-El impacto de la enfermedad de Alzheimer (EA) ha ido en aumento en las últimas décadas específicamente en la población de la tercera edad, lo que ha llevo a numerosos estudios se enfoquen al estudio de esta patología, así como a la identificación de importantes diferencias entre las variantes de la enfermedad de Alzheimer de inicio temprano (EOAD) y tardío (LOAD). Es por esta razón que el presente estudio se enfocó en una base de datos de pacientes, los cuales son participantes del proyecto ROSMAP (Religious Orders Study and Memory and Aging Project), estableciendo como grupo control los individuos con EOAD y como grupo de estudio a los que presentan LOAD, para posteriormente ser sometidos a un análisis de expresión diferencial de genes, un análisis de enriquecimiento de vías, la representación de las vías y un análisis de redes con los paquetes edgeR, GAGE, pathview y igraph, respectivamente, del administrador de paquetes Bioconductor 3.13. Los resultados demostraron perturbaciones significativas dentro de las vías señalización de los ribosomas, la fosforilación oxidativa y la contracción del músculo cardiaco. 
+
+La Enfermedad de Alzheimer (EA) es un desorden neurodegenerativo caracterizado por un déficit cognitivo y funcional gradualmente progresivo, así como cambios de comportamiento y está asociado con una gran variedad factores para tener en cuenta para su desarrollo, entre los cuales destacan el nivel de educación, el estado socioeconómico del individuo, el cuidado de la salud de los pacientes, problemas tanto cerebrovasculares como en el sistema inmune y cambios en el microambiente del tejido cerebral. El gran impacto de esta patología en la población mundial y la complejidad de las variables para tener en cuenta en su estudio ha llevado a los investigadores a categorizarla como una enfermedad compleja, en donde sus principales características son la existencia de diversos niveles en los cuales puede ser estudiada (genes, transcritos, proteínas, células) y las interacciones no lineales que suelen presentar entre sus componentes. Además, se han reportado numerosas diferencias entre las variantes de la EA de inicio temprano e inicio tardío que abarcan desde implicaciones en el comportamiento y habilidades de los individuos afectados hasta diferencias en el microambiente y en la fisiología del tejido cerebral.
+
+Por las razones anteriormente mencionadas, en el presente estudio se utilizaron los datos de expresión génica provenientes del proyecto ROSMAP (Religious Orders Study and Memory and Aging Project) para estudiar los genes diferencialmente expresados entre las variantes de la enfermedad de Alzheimer de inicio temprano (grupo control) e inicio tardío (grupo experimental), a través de los enfoques de **biología de redes, análisis de expresión diferencial, análisis de vías de señalización alteradas**, entre otros.
+
+
+---
+
+## Herramientas utilizadas
+- Lenguaje de Programación: R 
+
+### Librerias
+
+#### General
+- dplyr 1.0.7
+- tidyverse 1.3.1
+- plyr 1.8.6
+- data.table 1.14.2
+
+#### Plots
+- ggplot2 3.3.5
+- ggpubr 0.4.0
+- ggrepel 0.9.1
+
+#### Teoría de la información 
+- minet 3.48.0
+
+#### Redes
+- igraph 1.2.7
+- graphite 1.36
+- tidygraph 1.2.0
+- ggraph 2.0.5
+- Rgraphviz 2.34.0
+
+#### Expresión diferencial
+- edgeR 3.32.1
+
+#### Análisis de vías de señalización 
+- Gage 2.40.2
+- pathview 1.30.1
+
+#### Gene code
+- AnnotationDbi 1.52.0
+- org.Hs.eg.db 3.12.0
+
 
 ## Objetivos
 - **Basándose en los conceptos de biología de redes, caracterizar el Alzheimer de inicio temprano e inicio tardío para la identificación de posibles áreas de interés biológico.**
 - Identificar un conjunto de datos de utilidad para el análisis del Alzheimer
 - Preprocesamiento de los datos obtenidos
 - Análisis de expresión diferencial de genes, vías y redes
+
+
 
 ## Metodología 
 ![Metodologia](Metodologia.png)
