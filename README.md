@@ -2,6 +2,7 @@
 
 [README English](READMEEnglish.md)
 - [Biologia de Redes Aplicada a la Enfermedad de Alzheimer](#biologia-de-redes-aplicada-a-la-enfermedad-de-alzheimer)
+  - [Resumen](#resumen)
   - [Objetivos](#objetivos)
     - [Generales](#generales)
     - [Particulares](#particulares)
@@ -16,6 +17,8 @@
       - [Expresión diferencial](#expresión-diferencial)
       - [Análisis de vías de señalización](#análisis-de-vías-de-señalización)
       - [Gene code](#gene-code)
+
+## Resumen
 
 La Enfermedad de Alzheimer (EA) es un desorden neurodegenerativo caracterizado por un déficit cognitivo y funcional gradualmente progresivo, así como cambios de comportamiento y está asociado con una gran variedad factores para tener en cuenta para su desarrollo, entre los cuales destacan el nivel de educación, el estado socioeconómico del individuo, el cuidado de la salud de los pacientes, problemas tanto cerebrovasculares como en el sistema inmune y cambios en el microambiente del tejido cerebral. El gran impacto de esta patología en la población mundial y la complejidad de las variables para tener en cuenta en su estudio ha llevado a los investigadores a categorizarla como una enfermedad compleja, en donde sus principales características son la existencia de diversos niveles en los cuales puede ser estudiada (genes, transcritos, proteínas, células) y las interacciones no lineales que suelen presentar entre sus componentes. Además, se han reportado numerosas diferencias entre las variantes de la EA de inicio temprano (EOAD) e inicio tardío (LOAD) que abarcan desde implicaciones en el comportamiento y habilidades de los individuos afectados hasta diferencias en el microambiente y en la fisiología del tejido cerebral.
 
