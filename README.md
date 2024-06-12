@@ -17,6 +17,7 @@
       - [Expresión diferencial](#expresión-diferencial)
       - [Análisis de vías de señalización](#análisis-de-vías-de-señalización)
       - [Gene code](#gene-code)
+  - [Licencia](#licencia)
 
 ## Resumen
 
@@ -81,3 +82,9 @@ Se logró llevar a cabo el análisis de expresión diferencial y vías a los dat
 #### Gene code
 - AnnotationDbi 1.52.0
 - org.Hs.eg.db 3.12.0
+
+
+
+## Licencia
+
+Este proyecto está sujeto a todos los derechos reservados. No se permite el uso, distribución, o modificación del código sin una autorización explícita del autor.

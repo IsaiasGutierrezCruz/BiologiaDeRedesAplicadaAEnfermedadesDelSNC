@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+# data
 ROSMAP/Data
 ROSMAP/Results
 .rds
@@ -11,6 +12,7 @@ ROSMAP/PruebaModuleEnrichmentAndProjection/resultsWithOnlySymbl
 ROSMAP/PruebaModuleEnrichmentAndProjection/MakePlots
 Reportes/ReporteGAGE/Data
 Reportes/ReporteFinal/Data
+# auxiliar code
+Tutoriales/
 Reportes/ReporteFinal/FinalPlots
-
 
