@@ -17,4 +17,4 @@ generate_plots <- function(plot_directory, directory = "~/"){
 }
 
 
-generate_plots(plot_directory ='PlotsTest', directory=file.path(getwd(), 'ROSMAP'))
+generate_plots(plot_directory ='Plots', directory=file.path(getwd(), 'ROSMAP'))
