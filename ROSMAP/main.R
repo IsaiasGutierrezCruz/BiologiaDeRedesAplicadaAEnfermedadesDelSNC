@@ -41,6 +41,9 @@ main <- function(directory = "~/"){
                                       name_of_cols = c("symbol", "entrez", "name"), 
                                       delete_NA = TRUE)
   
+  dir.create("Results/DGE")
+  write.csv(top2$table, "Results/DGE/top2_table.csv", row.names=TRUE)
+  
   # representation of the pathways
   source("2DGEAandPathwaysPerturbed/analysisPathview.R")
   tmp <- analysisPathview(top2 = top2, 
@@ -133,4 +136,10 @@ main <- function(directory = "~/"){
                    names = c("earlyOnset", "lateOnset"), 
                    output_path = "Results/ModuleEnrichmentAndProjection",
                    pvalueThreshold = 0.05)
+  
+  # -------------------------------------------------------------------------------------------
+  # -------------------------- Calculate Properties for Graphs -------------------------------
+  # -------------------------------------------------------------------------------------------
+  source('supportFunctions/calculate_props_main_graphs.R')
+  calculate_props_main_graphs(directory=getwd())
 }
